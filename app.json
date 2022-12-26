@@ -1,0 +1,57 @@
+{
+  "configVersion": "v2",
+  "app": {
+    "appId": 28740,
+    "appName": "Quick notes",
+    "appType": "app",
+    "version": {
+      "code": 1,
+      "name": "1.0.1"
+    },
+    "icon": "icon.png",
+    "vender": "zepp",
+    "description": "Quick notes app"
+  },
+  "permissions": [],
+  "runtime": {
+    "apiVersion": {
+      "compatible": "1.0.0",
+      "target": "1.0.1",
+      "minVersion": "1.0.0"
+    }
+  },
+  "targets": {
+    "336x384-gts-4-mini": {
+      "module": {
+        "page": {
+          "pages": [
+            "page/index"
+          ]
+        },
+        "app-side": {
+          "path": "app-side/index"
+        },
+        "setting": {
+          "path": "setting/index"
+        }
+      },
+      "platforms": [
+        {
+          "name": "gts4-mini",
+          "deviceSource": 246
+        },
+        {
+          "name": "gts4-mini-w",
+          "deviceSource": 247
+        }
+      ],
+      "designWidth": 336
+    }
+  },
+  "i18n": {
+    "en-US": {
+      "appName": "Quick notes"
+    }
+  },
+  "defaultLanguage": "en-US"
+}
