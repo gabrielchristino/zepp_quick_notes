@@ -5,197 +5,47 @@ const logger = DeviceRuntimeCore.HmLogger.getLogger('demo')
 const width = 336;
 const height = 380;
 const buttonWidth = 100;
-const buttonWidthMargin = 102;
-const buttonHeight = 60;
-const buttonHeightMargin = 62;
-const margin = 15;
+const buttonWidthMini = 60;
+const buttonHeight = 110;
+const buttonHeighMini = 60;
+const margin = 16;
+const groupHeight = 5 * (buttonHeight + margin);
+const topBarY = 50;
 
-let quickReply = []; // ['Manda mensagem', 'Oi!😁', 'Já te retorno 😁']
-const emojis = ['😍', '😂', '😘', '😱', '♥', '😁', '😎', '🙈', '👍', '😢', '🙏', '😇', '😴', '👀', '😋'];
-const letters = [[',', '.', ' ', '?'], ['a', 'b', 'c'], ['d', 'e', 'f'], ['g', 'h', 'i'], ['j', 'k', 'l'], ['m', 'n', 'o'], ['p', 'q', 'r', 's'], ['t', 'u', 'v'], ['w', 'x', 'y', 'z']];
+let notesList = [];
+
+let dataArray = [];
+
+let dialogAbout;
+let dialogError;
+
+let scrollList;
+let scrollListItems = [];
+let topBarComponent;
 
 let lastButton = 0;
 let lastClick = 0;
-let currentLetterIndex = 0;
-
-let currentLetter = '';
-let lastLetter = '';
-let text = '';
-
-let displayText;
-let displayCurrentLetter;
-let quickReplyButtons = [];
-
-let dialogSendConfirm;
-
-let cycleImageTextList;
-
-updateCurrentLetter = function () {
-  displayCurrentLetter.setProperty(hmUI.prop.MORE, {
-    text: currentLetter
-  })
-}
-
-updateText = function () {
-  displayText.setProperty(hmUI.prop.MORE, {
-    text
-  })
-}
-
-getLettersToDisplay = function (buttonLetters) {
-  let displayLetters = '';
-  for (let index = 0; index < buttonLetters.length; index++) {
-    displayLetters += buttonLetters[index] + ' '
-  }
-  return displayLetters
-}
-
-getALetter = function (buttonLetters, currentButton) {
-  let nowClick = Date.now();
-  if (nowClick - lastClick < 1000) {
-    if (lastButton == currentButton) {
-      currentLetterIndex++;
-      if (currentLetterIndex == buttonLetters.length) {
-        currentLetterIndex = 0;
-      }
-    } else {
-      text += lastLetter;
-      currentLetterIndex = 0;
-    }
-  } else {
-    text += lastLetter;
-    currentLetterIndex = 0;
-  }
-
-  updateText();
-
-  currentLetter = buttonLetters[currentLetterIndex];
-
-  updateCurrentLetter();
-
-  lastLetter = currentLetter;
-
-  lastButton = currentButton;
-  lastClick = nowClick;
-}
-
-getAEmoji = function (emoji) {
-  currentLetter = emoji;
-
-  updateCurrentLetter();
-
-  text += lastLetter;
-  lastLetter = currentLetter;
-
-  updateText();
-  hmUI.scrollToPage(1, true);
-}
-
-backspaceText = function () {
-  if (lastLetter == '') {
-    const withEmojis = /\p{Extended_Pictographic}/u
-    if (withEmojis.test(text.slice(-2))) {
-      text = text.slice(0, -1);
-    }
-    text = text.slice(0, -1);
-  }
-
-  lastLetter = '';
-  currentLetter = '';
-
-  updateCurrentLetter();
-
-  updateText();
-}
-
-udapteQuickReply = function () {
-  hmUI.deleteWidget(cycleImageTextList);
-  messageBuilder.request({
-    method: 'GET_NOTES',
-    params: {
-      text
-    }
-  }).then(data => {
-    let { text } = data
-    if (text && text.slice(-1).indexOf("/") > -1) {
-      text = text.slice(0, -1)
-    }
-    quickReply = text && text.length > 0 ? text.split('/') : [];
-    let dataArray = [];
-    if (quickReply && quickReply.length > 0) {
-      for (let i = 0; i < quickReply.length; i++) {
-        dataArray.push({ text: quickReply[i] });
-      }
-      cycleImageTextList = hmUI.createWidget(hmUI.widget.CYCLE_IMAGE_TEXT_LIST, {
-        x: width * 2 + margin,
-        y: 50,
-        w: width - margin * 2,
-        h: dataArray.length * 50 > height - 65 ? height - 65 : dataArray.length * 50,
-        data_array: dataArray,
-        data_size: dataArray.length,
-        item_height: 50,
-        item_text_color: 0xffffff,
-        item_text_size: 30,
-        item_click_func: (cycleList, index) => {
-          initDialogDeleteANote(index, dataArray[index].text);
-        }
-      })
-      cycleImageTextList.setProperty(hmUI.prop.LIST_TOP, { index: 0 })
-    } else {
-      hmUI.deleteWidget(cycleImageTextList);
-      cycleImageTextList = hmUI.createWidget(hmUI.widget.BUTTON, {
-        x: width * 2 + margin,
-        y: height - 15 - buttonHeightMargin,
-        text: 'Create a note first',
-        text_size: 30,
-        w: width - margin * 2,
-        h: buttonHeight,
-        radius: 5,
-        normal_color: 0x555555,
-        press_color: 0x888888,
-        click_func: () => {
-          hmUI.scrollToPage(1, true);
-        }
-      })
-    }
-  })
-}
-
-initDialogSend = function () {
-  dialogSendConfirm = hmUI.createDialog({
-    title: text,
-    auto_hide: true,
-    click_linster: ({ type }) => {
-      if (type == 1) {
-        messageBuilder.request({
-          method: 'ADD_NOTE',
-          params: {
-            text
-          }
-        }).then(data => {
-          udapteQuickReply();
-        })
-        text = '';
-        lastLetter = '';
-        currentLetter = '';
-
-        updateCurrentLetter();
-        updateText();
-      }
-    }
-  })
-  dialogSendConfirm.show(true)
-}
 
 initDialogAbout = function () {
-  dialogSendConfirm = hmUI.createDialog({
+  dialogAbout = hmUI.createDialog({
     title: 'Quick notes by Gabriel Christino',
     auto_hide: true,
     click_linster: ({ type }) => {
       hmUI.scrollToPage(1, true);
     }
   })
-  dialogSendConfirm.show(true)
+  dialogAbout.show(true)
+}
+
+initDialogError = function () {
+  dialogError = hmUI.createDialog({
+    title: 'Sorry, an error occurred! Close the app and try again later;',
+    auto_hide: true,
+    click_linster: ({ type }) => {
+      hmApp.exit();
+    }
+  })
+  dialogError.show(true)
 }
 
 initDialogDeleteANote = function (index, textReminder) {
@@ -208,19 +58,14 @@ initDialogDeleteANote = function (index, textReminder) {
         messageBuilder.request({
           method: 'DELETE_A_NOTE',
           params: {
-            text: index
+            savedNotesStr: index
           }
         }).then(data => {
-          udapteQuickReply();
+          udapteNotesList();
         })
-        text = '';
-        lastLetter = '';
-        currentLetter = '';
-
-        updateCurrentLetter();
-        updateText();
-
-        hmUI.scrollToPage(1, true);
+          .catch((res) => {
+            initDialogError();
+          })
       }
     }
   })
@@ -237,193 +82,287 @@ initDialogDeleteAll = function () {
         messageBuilder.request({
           method: 'DELETE_ALL_NOTES',
           params: {
-            text: ''
+            savedNotesStr: ''
           }
         }).then(data => {
-          udapteQuickReply();
+          udapteNotesList();
         })
-        text = '';
-        lastLetter = '';
-        currentLetter = '';
-
-        updateCurrentLetter();
-        updateText();
-
-        hmUI.scrollToPage(1, true);
+          .catch((res) => {
+            initDialogError();
+          })
       }
     }
   })
   dialogDeleteAllConfirm.show(true)
 }
 
-sendMessage = function () {
-  text += lastLetter;
-  lastLetter = '';
-  currentLetter = '';
-
-  updateCurrentLetter();
-
-  updateText();
-
-  initDialogSend()
-}
-
 removeAllNotes = function () {
-  text += lastLetter;
-  lastLetter = '';
-  currentLetter = '';
-
-  updateCurrentLetter();
-  updateText();
-
   initDialogDeleteAll()
 }
 
-Page({
-  build() {
-    lastClick = Date.now();
+showtopBar = function (dataArray) {
+  if (dataArray && dataArray.length > 0) {
 
-    hmApp.setScreenKeep(true);
-
-    hmUI.setScrollView(true, px(width), 4, false);
-
-    // receive a message from the Side Service
-    messageBuilder.on('call', ({ payload: buf }) => {
-      // call the messageBuilder.buf2Json method to convert the buffer to a JS JSON object
-      const data = messageBuilder.buf2Json(buf);
-      let { text } = data
-      quickReply = text && text.length > 0 ? text.split('/') : [];
-
-      udapteQuickReply();
+    topBarComponent = hmUI.createWidget(hmUI.widget.GROUP, {
+      x: (width * 0) + (width / 2) - buttonWidthMini - (margin / 2),
+      y: topBarY,
+      w: buttonWidthMini * 2 + margin,
+      h: buttonHeighMini,
     })
 
-
-
-    displayText = hmUI.createWidget(hmUI.widget.TEXT, {
-      x: width,
-      y: 50,
-      w: width,
-      h: 60,
-      color: 0xffffff,
-      text_size: 36,
-      align_h: hmUI.align.LEFT,
-      align_v: hmUI.align.TOP,
-      text_style: hmUI.text_style.NONE,
-      text
+    topBarComponent.createWidget(hmUI.widget.BUTTON, {
+      x: 0,
+      y: 0,
+      w: buttonWidthMini,
+      h: buttonHeighMini,
+      normal_color: 0xAD3C23,
+      press_color: 0xD14221,
+      radius: buttonHeighMini / 2,
     })
 
-    displayCurrentLetter = hmUI.createWidget(hmUI.widget.TEXT, {
-      x: width,
-      y: height - 15 - 4 * buttonHeightMargin,
-      w: width,
-      h: buttonHeight,
-      color: 0xffffff,
-      text_size: 30,
-      align_h: hmUI.align.CENTER_H,
-      align_v: hmUI.align.CENTER_V,
-      text_style: hmUI.text_style.NONE,
-      text
-    })
-
-    const okButton = hmUI.createWidget(hmUI.widget.BUTTON, {
-      x: margin + width,
-      y: height - 15 - 4 * buttonHeightMargin,
-      text: 'ok',
-      text_size: 30,
-      w: buttonWidth,
-      h: buttonHeight,
-      radius: 5,
-      normal_color: 0x555555,
-      press_color: 0x888888,
+    topBarComponent.createWidget(hmUI.widget.BUTTON, {
+      x: 0,
+      y: 0,
+      w: buttonWidthMini,
+      h: buttonHeighMini,
+      normal_src: 'ic_del_32px.png',
+      press_src: 'ic_del_32px.png',
       click_func: () => {
-        sendMessage()
-      }
-    })
-
-    const backspace = hmUI.createWidget(hmUI.widget.BUTTON, {
-      x: width * 2 - margin - buttonWidth,
-      y: height - 15 - 4 * buttonHeightMargin,
-      text: '<',
-      text_size: 30,
-      w: buttonWidth,
-      h: buttonHeight,
-      radius: 5,
-      normal_color: 0x555555,
-      press_color: 0x888888,
-      click_func: () => {
-        backspaceText()
-      }
-    })
-
-    for (let i = 0; i < 5; i++) {
-      for (let j = 0; j < 3; j++) {
-        hmUI.createWidget(hmUI.widget.BUTTON, {
-          x: j * buttonWidthMargin + 15,
-          y: height - (5 - i) * buttonHeightMargin,
-          text: emojis[i * 3 + j],
-          text_size: 38,
-          w: buttonWidth,
-          h: buttonHeight,
-          radius: 5,
-          normal_color: 0x555555,
-          press_color: 0x888888,
-          click_func: () => {
-            getAEmoji(emojis[i * 3 + j])
-          }
-        })
-      }
-    }
-
-    for (let i = 0; i < 3; i++) {
-      for (let j = 0; j < 3; j++) {
-        hmUI.createWidget(hmUI.widget.BUTTON, {
-          x: j * buttonWidthMargin + width + margin,
-          y: height - 15 - (3 - i) * buttonHeightMargin,
-          text: getLettersToDisplay(letters[i * 3 + j]),
-          text_size: 30,
-          w: buttonWidth,
-          h: buttonHeight,
-          radius: 5,
-          normal_color: 0x555555,
-          press_color: 0x888888,
-          click_func: () => {
-            getALetter(letters[i * 3 + j], i * 3 + j)
-          }
-        })
-      }
-    }
-
-    udapteQuickReply();
-
-    hmUI.createWidget(hmUI.widget.BUTTON, {
-      x: width * 3 + margin,
-      y: height - 15 - buttonHeightMargin,
-      text: 'Remove all notes',
-      text_size: 30,
-      w: width - margin * 2,
-      h: buttonHeight,
-      radius: 5,
-      normal_color: 0x555555,
-      press_color: 0x888888,
-      click_func: () => {
+    
         removeAllNotes();
       }
     })
 
-    hmUI.createWidget(hmUI.widget.BUTTON, {
-      x: width * 3 + margin,
-      y: height - 15 - 2 * buttonHeightMargin,
-      text: 'About',
-      text_size: 30,
-      w: width - margin * 2,
-      h: buttonHeight,
-      radius: 5,
-      normal_color: 0x555555,
-      press_color: 0x888888,
+    topBarComponent.createWidget(hmUI.widget.BUTTON, {
+      x: buttonWidthMini + margin,
+      y: 0,
+      w: buttonWidthMini,
+      h: buttonHeighMini,
+      normal_color: 0x0986D4,
+      press_color: 0x0986D4,
+      radius: buttonHeighMini / 2,
+    })
+
+    topBarComponent.createWidget(hmUI.widget.BUTTON, {
+      x: buttonWidthMini + margin,
+      y: 0,
+      w: buttonWidthMini,
+      h: buttonHeighMini,
+      normal_src: 'ic_add_32px.png',
+      press_src: 'ic_add_32px.png',
       click_func: () => {
-        initDialogAbout();
+    
+        hmApp.gotoPage({ file: 'page/keyboard' });
       }
     })
 
+  } else {
+    topBarComponent.setProperty(hmUI.prop.VISIBLE, false);
+  }
+}
+
+doubleClickToEditItem = function (index, textReminder) {
+  let nowClick = Date.now();
+  if (nowClick - lastClick < 1000) {
+    if (lastButton == index) {
+      messageBuilder.request({
+        method: 'DELETE_A_NOTE',
+        params: {
+          savedNotesStr: index
+        }
+      }).then(data => {
+        getApp()._options.globalData.currentText = textReminder;
+        hmApp.gotoPage({ file: 'page/keyboard' });
+      })
+        .catch((res) => {
+          initDialogError();
+        })
+    }
+  }
+
+  lastButton = index;
+  lastClick = nowClick;
+}
+
+showNotesList = function (dataArray) {
+
+
+  for (let index = 0; index < scrollListItems.length; index++) {
+    hmUI.deleteWidget(scrollListItems[index][0]);
+    if (index !== scrollListItems.length - 1) {
+      hmUI.deleteWidget(scrollListItems[index][1]);
+      hmUI.deleteWidget(scrollListItems[index][2]);
+      hmUI.deleteWidget(scrollListItems[index][3]);
+    }
+  }
+
+
+  const yMargin = topBarY + buttonHeighMini + margin;
+
+  let heightButton = yMargin;
+
+  for (let index = 0; index < dataArray.length; index++) {
+
+    const medidas = hmUI.getTextLayout(dataArray[index].savedNotesStr, {
+      text_size: 30,
+      text_width: width - buttonWidthMini - margin * 2,
+      wrapped: 1
+    })
+
+    const rowData = hmUI.createWidget(hmUI.widget.BUTTON, {
+      x: 0,
+      y: heightButton,
+      w: width - buttonWidthMini - margin,
+      h: medidas.height + margin,
+      normal_color: 0x333333,
+      press_color: 0x888888,
+      radius: 16,
+    })
+
+    const displayText = hmUI.createWidget(hmUI.widget.TEXT, {
+      x: margin,
+      y: heightButton,
+      w: width - buttonWidthMini - margin * 2,
+      h: medidas.height + margin,
+      color: 0xffffff,
+      text_size: 30,
+      align_h: hmUI.align.LEFT,
+      align_v: hmUI.align.CENTER_V,
+      text_style: hmUI.text_style.WRAP,
+      char_space: 0,
+      line_space: 0,
+      text: dataArray[index].savedNotesStr,
+    })
+    displayText.addEventListener(hmUI.event.CLICK_DOWN, function (info) {
+      doubleClickToEditItem(index, dataArray[index].savedNotesStr);
+    })
+
+    const rowDelButton = hmUI.createWidget(hmUI.widget.BUTTON, {
+      x: width - buttonWidthMini,
+      y: heightButton,
+      w: buttonWidthMini,
+      h: medidas.height + margin,
+      normal_color: 0xAD3C23,
+      press_color: 0xD14221,
+      radius: 16,
+    })
+
+    const rowDelButtonImg = hmUI.createWidget(hmUI.widget.BUTTON, {
+      x: width - buttonWidthMini,
+      y: heightButton,
+      w: buttonWidthMini,
+      h: medidas.height + margin,
+      normal_src: 'ic_del_32px.png',
+      press_src: 'ic_del_32px.png',
+      click_func: () => {
+        initDialogDeleteANote(index, dataArray[index].savedNotesStr);
+      }
+    })
+    let rowItem = [];
+    rowItem.push(rowData, rowDelButton, rowDelButtonImg, displayText);
+    scrollListItems.push(rowItem);
+
+    heightButton += medidas.height + margin * 2;
+
+  }
+
+  const endOfScreen = hmUI.createWidget(hmUI.widget.TEXT, {
+    x: margin,
+    y: yMargin + (heightButton + margin) * dataArray.length,
+    w: (width - margin * 2),
+    h: heightButton,
+    text: '',
+    text_size: 0,
+  })
+  let rowItem = [];
+  rowItem.push(endOfScreen);
+  scrollListItems.push(rowItem);
+
+
+
+  showtopBar(dataArray);
+  hmUI.scrollToPage(0, false);
+}
+
+loadNotesListAndShow = function (data) {
+
+  let { savedNotesStr } = data
+
+  if (savedNotesStr && savedNotesStr.slice(-1).indexOf("/") > -1) {
+    savedNotesStr = savedNotesStr.slice(0, -1)
+  }
+  notesList = savedNotesStr && savedNotesStr.length > 0 ? savedNotesStr.split('/') : [];
+
+  if (notesList && notesList.length > 0) {
+
+    dataArray = [];
+    for (let i = 0; i < notesList.length; i++) {
+      dataArray.push({ savedNotesStr: notesList[i], img_src: '/ic_del_32px.png' });
+    }
+
+
+
+    showNotesList(dataArray);
+
+  } else {
+    hmApp.gotoPage({ file: 'page/nonotes' })
+  }
+}
+
+udapteNotesList = function () {
+
+  
+  let testemsg
+  try {
+    testemsg = messageBuilder.request({
+      method: 'GET_NOTES',
+      params: {
+        savedNotesStr: ''
+      }
+    })
+  } catch (e) {
+    
+    initDialogError();
+  }
+  testemsg.then(data => {
+    
+    loadNotesListAndShow(data);
+    getApp()._options.globalData.currentText = '';
+  })
+    .catch((res) => {
+      
+      initDialogError();
+    })
+
+}
+
+getMultiClickTimeout = function () {
+  messageBuilder.request({
+    method: 'GET_KBD_MTCLK_TOUT',
+    params: {
+      multiClickTimeout: 1000
+    }
+  }).then(data => {
+    getApp()._options.globalData.multiClickTimeout = data.multiClickTimeout;
+  })
+    .catch((res) => {
+      initDialogError();
+    })
+}
+
+Page({
+  build() {
+    hmUI.setScrollView(false);
+    // receive a message from the Side Service
+    messageBuilder.on('call', ({ payload: buf }) => {
+      // call the messageBuilder.buf2Json method to convert the buffer to a JS JSON object
+      const data = messageBuilder.buf2Json(buf);
+      let { savedNotesStr } = data
+      notesList = savedNotesStr && savedNotesStr.length > 0 ? savedNotesStr.split('/') : [];
+
+      udapteNotesList();
+    })
+
+    udapteNotesList();
   }
 })

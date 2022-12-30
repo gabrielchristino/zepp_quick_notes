@@ -23,7 +23,7 @@ let logger
 function initLogger() {
   if (isHmAppDefined()) {
     logger = Logger.getLogger('device-message')
-    // logger.level = logger.levels.warn
+    //logger.level = logger.levels.warn
   } else {
     logger = Logger.getLogger('side-message')
   }
@@ -1009,7 +1009,7 @@ export class MessageBuilder extends EventBus {
   request(data, opts) {
     const _request = () => {
       const defaultOpts = {
-        timeout: 60000,
+        timeout: 5000,
         contentType: 'json',
         dataType: 'json'
       }
@@ -1100,7 +1100,7 @@ export class MessageBuilder extends EventBus {
         }),
       ])
     }
-
+    
     return this.waitingShakePromise.then(_request)
   }
 

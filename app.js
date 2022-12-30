@@ -8,17 +8,21 @@ const messageBuilder = new MessageBuilder({ appId })
 App({
   globalData: {
     messageBuilder: messageBuilder,
+    currentText: '',
+    multiClickTimeout: 1000
   },
   onCreate(options) {
-    // console.log('app on create invoke')
     hmApp.setScreenKeep(true);
     // establish connection
-    messageBuilder.connect()
+    try {
+      messageBuilder.connect()
+    } catch (e) {
+      messageBuilder.disConnect()
+      messageBuilder.connect()
+    }
   },
 
   onDestroy(options) {
-    // console.log('app on destroy invoke')
-    
     messageBuilder.disConnect()
   }
 })

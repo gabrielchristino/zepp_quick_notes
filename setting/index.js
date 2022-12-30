@@ -5,6 +5,5 @@ const { messageBuilder } = getApp()._options.globalData
 
 AppSettingsPage({
   build() {
-    // console.log(gettext('example'))
   }
 })
