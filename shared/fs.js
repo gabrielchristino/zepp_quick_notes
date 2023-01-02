@@ -19,14 +19,14 @@ function str2ab(str) {
  * @returns
  */
 export function statSync(filename) {
-  logger.log('statSync', filename)
+  // logger.log('statSync', filename)
   const [fs_stat, err] = hmFS.stat(filename)
-  logger.log('res', fs_stat, err)
+  // logger.log('res', fs_stat, err)
   if (err == 0) {
-    logger.log('fs--->size:', fs_stat.size)
+    // logger.log('fs--->size:', fs_stat.size)
     return fs_stat
   } else {
-    logger.log('fs--->err:', err)
+    // logger.log('fs--->err:', err)
     return null
   }
 }
@@ -38,17 +38,17 @@ export function statSync(filename) {
  * @param {*} options
  */
 export function writeFileSync(filename, data, options) {
-  logger.log('writeFileSync begin -->', filename)
+  // logger.log('writeFileSync begin -->', filename)
 
   const stringBuffer = str2ab(data)
   const source_buf = new Uint8Array(stringBuffer)
 
   const file = hmFS.open(filename, hmFS.O_CREAT | hmFS.O_RDWR | hmFS.O_TRUNC)
-  logger.log('writeFileSync file open success -->', file)
+  // logger.log('writeFileSync file open success -->', file)
   hmFS.seek(file, 0, hmFS.SEEK_SET)
   hmFS.write(file, source_buf.buffer, 0, source_buf.length)
   hmFS.close(file)
-  logger.log('writeFileSync success -->', filename)
+  // logger.log('writeFileSync success -->', filename)
 }
 
 /**
@@ -58,7 +58,7 @@ export function writeFileSync(filename, data, options) {
  * @returns
  */
 export function readFileSync(filename, options) {
-  logger.log('readFileSync fiename:', filename)
+  // logger.log('readFileSync fiename:', filename)
 
   const fs_stat = statSync(filename)
   if (!fs_stat) return undefined
@@ -71,7 +71,7 @@ export function readFileSync(filename, options) {
   hmFS.close(file)
 
   const content = ab2str(destination_buf.buffer)
-  logger.log('readFileSync', content)
+  // logger.log('readFileSync', content)
   return content
 }
 
@@ -80,9 +80,9 @@ export function readFileSync(filename, options) {
  * @param {*} filename
  */
 export function unlinkSync(filename) {
-  logger.log('unlinkSync begin -->', filename)
+  // logger.log('unlinkSync begin -->', filename)
   const result = hmFS.remove(filename)
-  logger.log('unlinkSync result -->', result)
+  // logger.log('unlinkSync result -->', result)
   return result
 }
 
@@ -91,9 +91,9 @@ export function unlinkSync(filename) {
  * @param {*} filename
  */
 export function renameSync(oldFilename, newFilename) {
-  logger.log('renameSync begin -->', filename)
+  // logger.log('renameSync begin -->', filename)
   hmFS.rename(oldFilename, newFilename)
-  logger.log('renameSync success -->', filename)
+  // logger.log('renameSync success -->', filename)
 }
 
 /**
@@ -102,9 +102,9 @@ export function renameSync(oldFilename, newFilename) {
  * @param {*} options
  */
 export function mkdirSync(path, options) {
-  logger.log('mkdirSync begin -->', path)
+  // logger.log('mkdirSync begin -->', path)
   hmFS.mkdir(path)
-  logger.log('mkdirSync success -->', path)
+  // logger.log('mkdirSync success -->', path)
 }
 
 /**
@@ -113,22 +113,22 @@ export function mkdirSync(path, options) {
  * @param {*} options
  */
 export function readdirSync(path, options) {
-  logger.log('readdirSync begin -->', path)
+  // logger.log('readdirSync begin -->', path)
   hmFS.readdirSync(path)
-  logger.log('readdirSync success -->', path)
+  // logger.log('readdirSync success -->', path)
 }
 
 /**
  * Just to test the fs module
  */
 export function test(fileName, dataString) {
-  logger.log('saveData begin')
+  // logger.log('saveData begin')
 
   writeFileSync(fileName, dataString)
 
-  logger.log('fs_writeFileSync -> ', dataString)
+  // logger.log('fs_writeFileSync -> ', dataString)
 
   const content = readFileSync(fileName)
 
-  logger.log('fs_readFileSync -> ', content)
+  // logger.log('fs_readFileSync -> ', content)
 }

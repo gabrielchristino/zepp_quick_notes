@@ -27,7 +27,9 @@
           "pages": [
             "page/index",
             "page/keyboard",
-            "page/nonotes"
+            "page/nonotes",
+            "page/settings",
+            "page/doubleclick"
           ]
         },
         "app-side": {

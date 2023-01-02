@@ -1,6 +1,5 @@
-const { messageBuilder } = getApp()._options.globalData
+import * as fs from './../utils/fs'
 const logger = DeviceRuntimeCore.HmLogger.getLogger('demo')
-
 
 const width = 336;
 const height = 380;
@@ -13,13 +12,12 @@ const groupHeight = 5 * (buttonHeight + margin);
 const topBarY = 50;
 
 let notesList = [];
-
 let dataArray = [];
 
-let dialogAbout;
-let dialogError;
+let multiClickTimeout = 1000;
 
-let scrollList;
+let dialogAbout;
+
 let scrollListItems = [];
 let topBarComponent;
 
@@ -37,35 +35,14 @@ initDialogAbout = function () {
   dialogAbout.show(true)
 }
 
-initDialogError = function () {
-  dialogError = hmUI.createDialog({
-    title: 'Sorry, an error occurred! Close the app and try again later;',
-    auto_hide: true,
-    click_linster: ({ type }) => {
-      hmApp.exit();
-    }
-  })
-  dialogError.show(true)
-}
-
-initDialogDeleteANote = function (index, textReminder) {
+initDialogDeleteANote = function (indexToDelete, textReminder) {
   dialogDeleteAllConfirm = hmUI.createDialog({
     title: 'Delete this note? \n' + textReminder,
     auto_hide: true,
     click_linster: ({ type }) => {
       if (type == 1) {
-        // send a message to Side Service
-        messageBuilder.request({
-          method: 'DELETE_A_NOTE',
-          params: {
-            savedNotesStr: index
-          }
-        }).then(data => {
-          udapteNotesList();
-        })
-          .catch((res) => {
-            initDialogError();
-          })
+        fs.removeItemTodoList(indexToDelete)
+        udapteNotesList();
       }
     }
   })
@@ -78,35 +55,22 @@ initDialogDeleteAll = function () {
     auto_hide: true,
     click_linster: ({ type }) => {
       if (type == 1) {
-        // send a message to Side Service
-        messageBuilder.request({
-          method: 'DELETE_ALL_NOTES',
-          params: {
-            savedNotesStr: ''
-          }
-        }).then(data => {
-          udapteNotesList();
-        })
-          .catch((res) => {
-            initDialogError();
-          })
+        fs.deleteTodoList();
+        udapteNotesList();
       }
     }
   })
   dialogDeleteAllConfirm.show(true)
 }
 
-removeAllNotes = function () {
-  initDialogDeleteAll()
-}
-
 showtopBar = function (dataArray) {
   if (dataArray && dataArray.length > 0) {
+    const buttonItems = 3;
 
     topBarComponent = hmUI.createWidget(hmUI.widget.GROUP, {
-      x: (width * 0) + (width / 2) - buttonWidthMini - (margin / 2),
+      x: width / 2 - ((buttonWidthMini + margin) * buttonItems - margin) / 2,
       y: topBarY,
-      w: buttonWidthMini * 2 + margin,
+      w: (buttonWidthMini + margin) * buttonItems,
       h: buttonHeighMini,
     })
 
@@ -128,8 +92,7 @@ showtopBar = function (dataArray) {
       normal_src: 'ic_del_32px.png',
       press_src: 'ic_del_32px.png',
       click_func: () => {
-    
-        removeAllNotes();
+        initDialogDeleteAll();
       }
     })
 
@@ -151,8 +114,31 @@ showtopBar = function (dataArray) {
       normal_src: 'ic_add_32px.png',
       press_src: 'ic_add_32px.png',
       click_func: () => {
-    
+        getApp()._options.globalData.currentText = '';
         hmApp.gotoPage({ file: 'page/keyboard' });
+      }
+    })
+
+    topBarComponent.createWidget(hmUI.widget.BUTTON, {
+      x: (buttonWidthMini + margin) * 2,
+      y: 0,
+      w: buttonWidthMini,
+      h: buttonHeighMini,
+      normal_color: 0x333333,
+      press_color: 0x333333,
+      radius: buttonHeighMini / 2,
+    })
+
+    topBarComponent.createWidget(hmUI.widget.BUTTON, {
+      x: (buttonWidthMini + margin) * 2,
+      y: 0,
+      w: buttonWidthMini,
+      h: buttonHeighMini,
+      normal_src: 'ic_sys_32px.png',
+      press_src: 'ic_sys_32px.png',
+      click_func: () => {
+
+        hmApp.gotoPage({ file: 'page/settings' });
       }
     })
 
@@ -161,32 +147,21 @@ showtopBar = function (dataArray) {
   }
 }
 
-doubleClickToEditItem = function (index, textReminder) {
+doubleClickToEditItem = function (indexToDelete, textReminder) {
   let nowClick = Date.now();
-  if (nowClick - lastClick < 1000) {
-    if (lastButton == index) {
-      messageBuilder.request({
-        method: 'DELETE_A_NOTE',
-        params: {
-          savedNotesStr: index
-        }
-      }).then(data => {
-        getApp()._options.globalData.currentText = textReminder;
-        hmApp.gotoPage({ file: 'page/keyboard' });
-      })
-        .catch((res) => {
-          initDialogError();
-        })
+  if (nowClick - lastClick < multiClickTimeout) {
+    if (lastButton == indexToDelete) {
+      fs.removeItemTodoList(indexToDelete)
+      getApp()._options.globalData.currentText = textReminder;
+      hmApp.gotoPage({ file: 'page/keyboard' });
     }
   }
 
-  lastButton = index;
+  lastButton = indexToDelete;
   lastClick = nowClick;
 }
 
 showNotesList = function (dataArray) {
-
-
   for (let index = 0; index < scrollListItems.length; index++) {
     hmUI.deleteWidget(scrollListItems[index][0]);
     if (index !== scrollListItems.length - 1) {
@@ -195,7 +170,6 @@ showNotesList = function (dataArray) {
       hmUI.deleteWidget(scrollListItems[index][3]);
     }
   }
-
 
   const yMargin = topBarY + buttonHeighMini + margin;
 
@@ -233,6 +207,7 @@ showNotesList = function (dataArray) {
       line_space: 0,
       text: dataArray[index].savedNotesStr,
     })
+
     displayText.addEventListener(hmUI.event.CLICK_DOWN, function (info) {
       doubleClickToEditItem(index, dataArray[index].savedNotesStr);
     })
@@ -278,29 +253,17 @@ showNotesList = function (dataArray) {
   rowItem.push(endOfScreen);
   scrollListItems.push(rowItem);
 
-
-
   showtopBar(dataArray);
   hmUI.scrollToPage(0, false);
 }
 
-loadNotesListAndShow = function (data) {
-
-  let { savedNotesStr } = data
-
-  if (savedNotesStr && savedNotesStr.slice(-1).indexOf("/") > -1) {
-    savedNotesStr = savedNotesStr.slice(0, -1)
-  }
-  notesList = savedNotesStr && savedNotesStr.length > 0 ? savedNotesStr.split('/') : [];
-
+loadNotesListAndShow = function () {
   if (notesList && notesList.length > 0) {
 
     dataArray = [];
     for (let i = 0; i < notesList.length; i++) {
       dataArray.push({ savedNotesStr: notesList[i], img_src: '/ic_del_32px.png' });
     }
-
-
 
     showNotesList(dataArray);
 
@@ -310,59 +273,33 @@ loadNotesListAndShow = function (data) {
 }
 
 udapteNotesList = function () {
-
-  
-  let testemsg
-  try {
-    testemsg = messageBuilder.request({
-      method: 'GET_NOTES',
-      params: {
-        savedNotesStr: ''
-      }
-    })
-  } catch (e) {
-    
-    initDialogError();
-  }
-  testemsg.then(data => {
-    
-    loadNotesListAndShow(data);
-    getApp()._options.globalData.currentText = '';
-  })
-    .catch((res) => {
-      
-      initDialogError();
-    })
-
+  notesList = fs.readTodoList();
+  loadNotesListAndShow();
 }
 
 getMultiClickTimeout = function () {
-  messageBuilder.request({
-    method: 'GET_KBD_MTCLK_TOUT',
-    params: {
-      multiClickTimeout: 1000
+  multiClickTimeout = fs.readKeyBoardMultiTimeout();
+}
+
+setGestureEvent = function () {
+  hmApp.registerGestureEvent(function (event) {
+    switch (event) {
+      case hmApp.gesture.LEFT:
+        hmApp.gotoPage({ file: 'page/settings' })
+        break
+      default:
+        break
     }
-  }).then(data => {
-    getApp()._options.globalData.multiClickTimeout = data.multiClickTimeout;
+    return false
   })
-    .catch((res) => {
-      initDialogError();
-    })
 }
 
 Page({
   build() {
     hmUI.setScrollView(false);
-    // receive a message from the Side Service
-    messageBuilder.on('call', ({ payload: buf }) => {
-      // call the messageBuilder.buf2Json method to convert the buffer to a JS JSON object
-      const data = messageBuilder.buf2Json(buf);
-      let { savedNotesStr } = data
-      notesList = savedNotesStr && savedNotesStr.length > 0 ? savedNotesStr.split('/') : [];
-
-      udapteNotesList();
-    })
-
+    hmUI.updateStatusBarTitle('Quick notes');
+    setGestureEvent();
     udapteNotesList();
+    getMultiClickTimeout();
   }
 })

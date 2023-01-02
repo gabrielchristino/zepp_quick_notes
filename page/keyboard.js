@@ -1,4 +1,5 @@
-const { messageBuilder } = getApp()._options.globalData
+import * as fs from './../utils/fs'
+
 const logger = DeviceRuntimeCore.HmLogger.getLogger('keyboard')
 
 const width = 336;
@@ -27,6 +28,8 @@ let displayText2;
 
 let dialogSendConfirm;
 
+let multiClickTimeout = 1000;
+
 updateText = function () {
     displayText.setProperty(hmUI.prop.MORE, {
         text
@@ -44,7 +47,7 @@ getLettersToDisplay = function (buttonLetters) {
     return displayLetters
 }
 
-getALetter = function (buttonLetters, currentButton, timeToDoubleClick = 1000) {
+getALetter = function (buttonLetters, currentButton, timeToDoubleClick = multiClickTimeout) {
     let nowClick = Date.now();
     if (nowClick - lastClick < timeToDoubleClick) {
         if (lastButton == currentButton) {
@@ -107,21 +110,12 @@ initDialogSend = function () {
             auto_hide: true,
             click_linster: ({ type }) => {
                 if (type == 1) {
-                    messageBuilder.request({
-                        method: 'ADD_NOTE',
-                        params: {
-                            text
-                        }
-                    }).then(data => {
-                        udapteNotesList();
-                        hmApp.gotoPage({ file: 'page/index' });
-                    })
-                    .catch((res) => {
-                      initDialogError();
-                    })
+                    fs.writeLastMessage(text);
+                    fs.addTodoList(text, true);
+                    fs.deleteLastMessage();
                     text = '';
-
                     updateText();
+                    hmApp.reloadPage({ file: 'page/index' });
                 }
             }
         })
@@ -169,9 +163,9 @@ createEmojiKeyboard = function () {
 
 createNumberKeyboard = function () {
     displayText2 = hmUI.createWidget(hmUI.widget.TEXT, {
-        x: (width * 1) + 20,
+        x: (width * 1) + 30,
         y: 1,
-        w: width - 40,
+        w: width - 60,
         h: 120,
         color: 0xffffff,
         text_size: 36,
@@ -201,7 +195,7 @@ createNumberKeyboard = function () {
                 normal_color: 0x333333,
                 press_color: 0x888888,
                 click_func: () => {
-                    getALetter(numbers[i * 3 + j], i * 3 + j, numbers[i * 3 + j].length > 1 ? 1000 : -1)
+                    getALetter(numbers[i * 3 + j], i * 3 + j, numbers[i * 3 + j].length > 1 ? multiClickTimeout : -1)
                 }
             })
         }
@@ -210,9 +204,9 @@ createNumberKeyboard = function () {
 
 createKeyboard = function () {
     displayText = hmUI.createWidget(hmUI.widget.TEXT, {
-        x: 20,
+        x: 30,
         y: 1,
-        w: width - 40,
+        w: width - 60,
         h: 120,
         color: 0xffffff,
         text_size: 30,
@@ -309,11 +303,16 @@ createKeyboard = function () {
 
 Page({
     build() {
+        hmApp.unregisterGestureEvent();
         hmUI.setStatusBarVisible(false);
-        
+
         lastClick = Date.now();
 
         hmUI.setScrollView(true, px(width), 3, false);
+
+        multiClickTimeout = fs.readKeyBoardMultiTimeout();
+
+        // logger.log('multiClickTimeout key', multiClickTimeout)
 
         createKeyboard();
 
@@ -321,29 +320,10 @@ Page({
 
         createEmojiKeyboard();
 
-        text = getApp()._options.globalData.currentText;
+        text = getApp()._options.globalData.currentText + fs.readLastMessage();
         updateText();
     },
     onDestroy() {
-
-        
-        getApp()._options.globalData.currentText = text;
-        messageBuilder.request({
-            method: 'ADD_NOTE',
-            params: {
-                text
-            }
-        }).then(data => {
-            
-            udapteNotesList();
-            hmApp.gotoPage({ file: 'page/index' });
-        })
-        .catch((res) => {
-          initDialogError();
-        })
-        text = '';
-
-        updateText();
-
+        fs.writeLastMessage(text);
     }
 })
