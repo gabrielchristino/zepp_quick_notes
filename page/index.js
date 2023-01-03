@@ -1,4 +1,6 @@
 import * as fs from './../utils/fs'
+import * as ui from '../utils/ui'
+
 const logger = DeviceRuntimeCore.HmLogger.getLogger('demo')
 
 const width = 336;
@@ -65,82 +67,33 @@ initDialogDeleteAll = function () {
 
 showtopBar = function (dataArray) {
   if (dataArray && dataArray.length > 0) {
-    const buttonItems = 3;
 
-    topBarComponent = hmUI.createWidget(hmUI.widget.GROUP, {
-      x: width / 2 - ((buttonWidthMini + margin) * buttonItems - margin) / 2,
-      y: topBarY,
-      w: (buttonWidthMini + margin) * buttonItems,
-      h: buttonHeighMini,
-    })
+    const buttonsItens = [
+      {
+        color: 0xAD3C23,
+        icon: 'ic_del_32px.png',
+        callback:  function() {
+          initDialogDeleteAll()
+        }
+      },
+      {
+        color: 0x0986D4,
+        icon: 'ic_add_32px.png',
+        callback: function() {
+            getApp()._options.globalData.currentText = '';
+            hmApp.gotoPage({ file: 'page/keyboard' });
+        }
+      },
+      {
+        color: 0x333333,
+        icon: 'ic_sys_32px.png',
+        callback: function() {
+          hmApp.gotoPage({ file: 'page/settings' });
+        }
+      },
+    ]
 
-    topBarComponent.createWidget(hmUI.widget.BUTTON, {
-      x: 0,
-      y: 0,
-      w: buttonWidthMini,
-      h: buttonHeighMini,
-      normal_color: 0xAD3C23,
-      press_color: 0xD14221,
-      radius: buttonHeighMini / 2,
-    })
-
-    topBarComponent.createWidget(hmUI.widget.BUTTON, {
-      x: 0,
-      y: 0,
-      w: buttonWidthMini,
-      h: buttonHeighMini,
-      normal_src: 'ic_del_32px.png',
-      press_src: 'ic_del_32px.png',
-      click_func: () => {
-        initDialogDeleteAll();
-      }
-    })
-
-    topBarComponent.createWidget(hmUI.widget.BUTTON, {
-      x: buttonWidthMini + margin,
-      y: 0,
-      w: buttonWidthMini,
-      h: buttonHeighMini,
-      normal_color: 0x0986D4,
-      press_color: 0x0986D4,
-      radius: buttonHeighMini / 2,
-    })
-
-    topBarComponent.createWidget(hmUI.widget.BUTTON, {
-      x: buttonWidthMini + margin,
-      y: 0,
-      w: buttonWidthMini,
-      h: buttonHeighMini,
-      normal_src: 'ic_add_32px.png',
-      press_src: 'ic_add_32px.png',
-      click_func: () => {
-        getApp()._options.globalData.currentText = '';
-        hmApp.gotoPage({ file: 'page/keyboard' });
-      }
-    })
-
-    topBarComponent.createWidget(hmUI.widget.BUTTON, {
-      x: (buttonWidthMini + margin) * 2,
-      y: 0,
-      w: buttonWidthMini,
-      h: buttonHeighMini,
-      normal_color: 0x333333,
-      press_color: 0x333333,
-      radius: buttonHeighMini / 2,
-    })
-
-    topBarComponent.createWidget(hmUI.widget.BUTTON, {
-      x: (buttonWidthMini + margin) * 2,
-      y: 0,
-      w: buttonWidthMini,
-      h: buttonHeighMini,
-      normal_src: 'ic_sys_32px.png',
-      press_src: 'ic_sys_32px.png',
-      click_func: () => {
-
-        hmApp.gotoPage({ file: 'page/settings' });
-      }
-    })
+    ui.createTopBar(buttonsItens);
 
   } else {
     topBarComponent.setProperty(hmUI.prop.VISIBLE, false);
@@ -298,8 +251,8 @@ Page({
   build() {
     hmUI.setScrollView(false);
     hmUI.updateStatusBarTitle('Quick notes');
+    getMultiClickTimeout();
     setGestureEvent();
     udapteNotesList();
-    getMultiClickTimeout();
   }
 })
