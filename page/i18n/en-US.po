@@ -1,2 +1,47 @@
-msgid "example"
-msgstr "This is an example in device"
+msgid "quickNotes"
+msgstr "Quick Notes"
+
+msgid "deleteThisNote"
+msgstr "Delete this note?"
+
+msgid "deleteAllNotes"
+msgstr "Delete all notes?"
+
+msgid "doubleClickTimeout"
+msgstr "Double click timeout"
+
+msgid "noNewNoteCreated"
+msgstr "No new note will be created"
+
+msgid "hints"
+msgstr "Hints"
+
+msgid "doubleClickToEdit"
+msgstr "Double-click a note to edit it"
+
+msgid "about"
+msgstr "About"
+
+msgid "createdBy"
+msgstr "Created by Gabriel Christino"
+
+msgid "github"
+msgstr "GitHub gabrielchristino"
+
+msgid "more"
+msgstr "More"
+
+msgid "noNotesCreated"
+msgstr "hello! you have no notes created yet"
+
+msgid "swipeRightToSettings"
+msgstr "Swipe from the right to settings"
+
+msgid "createFirstNote"
+msgstr "create first note"
+
+msgid "doubleClickSpeed"
+msgstr "Double-click speed"
+
+msgid "settings"
+msgstr "Settings"

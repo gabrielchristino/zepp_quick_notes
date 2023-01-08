@@ -1,0 +1,48 @@
+msgid "quickNotes"
+msgstr "Notas rápidas"
+
+msgid "deleteThisNote"
+msgstr "Apagar esta nota?"
+
+msgid "deleteAllNotes"
+msgstr "Apagar todas as notas?"
+
+msgid "doubleClickTimeout"
+msgstr "Intervalo do clique duplo"
+
+msgid "noNewNoteCreated"
+msgstr "Nenhuma nota será criada"
+
+msgid "hints"
+msgstr "Dicas"
+
+msgid "doubleClickToEdit"
+msgstr "Clique duas vezes em uma nota para editá-la"
+
+msgid "about"
+msgstr "Sobre"
+
+msgid "createdBy"
+msgstr "Criado por Gabriel Christino"
+
+msgid "github"
+msgstr "GitHub gabrielchristino"
+
+msgid "more"
+msgstr "Mais"
+
+msgid "noNotesCreated"
+msgstr "Olá! Você ainda não tem notas criadas"
+
+msgid "swipeRightToSettings"
+msgstr "Deslize da direita para abrir as configurações"
+
+msgid "createFirstNote"
+msgstr "criar a primeira nota"
+
+msgid "doubleClickSpeed"
+msgstr "Tempo do clique duplo"
+
+msgid "settings"
+msgstr "Configurações"
+

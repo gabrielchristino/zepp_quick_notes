@@ -1,3 +1,5 @@
+import { gettext } from 'i18n'
+
 import * as fs from '../utils/fs'
 import * as ui from '../utils/ui'
 
@@ -13,31 +15,31 @@ const margin = 15;
 
 const menuItems = [
     {
-        description: 'Hints',
+        description: gettext('hints'),
         icon: '',
         page: '',
         title: true
     },
     {
-        description: 'Double-click a note to edit it',
+        description: gettext('doubleClickToEdit'),
         icon: 'ic_gesture_50px.png',
         page: '',
         title: false
     },
     {
-        description: 'About',
+        description: gettext('about'),
         icon: '',
         page: '',
         title: true
     },
     {
-        description: 'Created by Gabriel Christino',
+        description: gettext('createdBy'),
         icon: 'ic_rest_50px.png',
         page: '',
         title: false
     },
     {
-        description: 'GitHub gabrielchristino',
+        description: gettext('github'),
         icon: 'github.png',
         page: '',
         title: false
@@ -46,7 +48,7 @@ const menuItems = [
 
 Page({
     build() {
-        hmUI.updateStatusBarTitle('More');
+        hmUI.updateStatusBarTitle(gettext('more'));
         ui.createMenuList(menuItems);
     }
 })

@@ -1,3 +1,5 @@
+import { gettext } from 'i18n'
+
 import * as fs from './../utils/fs'
 
 const logger = DeviceRuntimeCore.HmLogger.getLogger('settings')
@@ -15,7 +17,7 @@ let multiClickTimeout = 1000;
 
 Page({
     build() {
-        hmUI.updateStatusBarTitle('Double click timeout');
+        hmUI.updateStatusBarTitle(gettext('doubleClickTimeout'));
         multiClickTimeout = fs.readKeyBoardMultiTimeout();
 
         const radioGroup = hmUI.createWidget(hmUI.widget.RADIO_GROUP, {

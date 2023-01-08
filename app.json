@@ -1,7 +1,7 @@
 {
   "configVersion": "v2",
   "app": {
-    "appId": 28740,
+    "appId": 1015585,
     "appName": "Quick notes",
     "appType": "app",
     "version": {
@@ -56,6 +56,9 @@
   "i18n": {
     "en-US": {
       "appName": "Quick notes"
+    },
+    "pt-BR": {
+      "appName": "Notas rápidas"
     }
   },
   "defaultLanguage": "en-US"

@@ -1,3 +1,5 @@
+import { gettext } from 'i18n'
+
 import * as ui from '../utils/ui'
 
 const logger = DeviceRuntimeCore.HmLogger.getLogger('settings')
@@ -11,13 +13,13 @@ const margin = 15;
 
 const menuItems = [
     {
-        description: 'Double-click speed',
+        description: gettext('doubleClickSpeed'),
         icon: 'ic_gesture_50px.png',
         page: 'page/doubleclick',
         title: false
     },
     {
-        description: 'More',
+        description: gettext('more'),
         icon: 'ic_lamp_50px.png',
         page: 'page/more',
         title: false
@@ -26,7 +28,7 @@ const menuItems = [
 
 Page({
     build() {
-        hmUI.updateStatusBarTitle('Settings');
+        hmUI.updateStatusBarTitle(gettext('settings'));
 
         ui.createMenuList(menuItems);
     }

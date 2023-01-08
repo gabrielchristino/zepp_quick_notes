@@ -1,3 +1,5 @@
+import { gettext } from 'i18n'
+
 const logger = DeviceRuntimeCore.HmLogger.getLogger('no-notes')
 
 const width = 336;
@@ -24,7 +26,7 @@ showNoNotesMessage = function () {
     text_style: hmUI.text_style.WRAP,
     char_space: 0,
     line_space: 0,
-    text: "hello! you have no notes created yet"
+    text: gettext('noNotesCreated')
   })
 
   const settingsInfo = hmUI.createWidget(hmUI.widget.TEXT, {
@@ -39,13 +41,13 @@ showNoNotesMessage = function () {
     text_style: hmUI.text_style.WRAP,
     char_space: 0,
     line_space: 0,
-    text: "Swipe from the right to settings"
+    text: gettext('swipeRightToSettings')
   })
 
   buttonStartAddANewNote = hmUI.createWidget(hmUI.widget.BUTTON, {
     x: margin,
     y: height - margin - buttonHeightMargin,
-    text: 'create first note',
+    text: gettext('createFirstNote'),
     text_size: 30,
     w: width - margin * 2,
     h: buttonHeight,
@@ -60,7 +62,7 @@ showNoNotesMessage = function () {
 
 Page({
   build() {
-    hmUI.updateStatusBarTitle('Quick notes');
+    hmUI.updateStatusBarTitle(gettext('quickNotes'));
     setGestureEvent();
     showNoNotesMessage();
   }

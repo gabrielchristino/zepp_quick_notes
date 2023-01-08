@@ -1,3 +1,5 @@
+import { gettext } from 'i18n'
+
 import * as fs from './../utils/fs'
 
 const logger = DeviceRuntimeCore.HmLogger.getLogger('keyboard')
@@ -121,7 +123,7 @@ initDialogSend = function () {
         })
     } else {
         dialogSendConfirm = hmUI.createDialog({
-            title: 'No new note will be created',
+            title: gettext('noNewNoteCreated'),
             auto_hide: true,
             click_linster: ({ type }) => {
                 if (type == 1) {

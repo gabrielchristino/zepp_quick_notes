@@ -1,3 +1,5 @@
+import { gettext } from 'i18n'
+
 import * as fs from './../utils/fs'
 import * as ui from '../utils/ui'
 
@@ -18,28 +20,15 @@ let dataArray = [];
 
 let multiClickTimeout = 1000;
 
-let dialogAbout;
-
 let scrollListItems = [];
 let topBarComponent;
 
 let lastButton = 0;
 let lastClick = 0;
 
-initDialogAbout = function () {
-  dialogAbout = hmUI.createDialog({
-    title: 'Quick notes by Gabriel Christino',
-    auto_hide: true,
-    click_linster: ({ type }) => {
-      hmUI.scrollToPage(1, true);
-    }
-  })
-  dialogAbout.show(true)
-}
-
 initDialogDeleteANote = function (indexToDelete, textReminder) {
   dialogDeleteAllConfirm = hmUI.createDialog({
-    title: 'Delete this note? \n' + textReminder,
+    title: `${gettext('deleteThisNote')}\n${textReminder}`,
     auto_hide: true,
     click_linster: ({ type }) => {
       if (type == 1) {
@@ -53,7 +42,7 @@ initDialogDeleteANote = function (indexToDelete, textReminder) {
 
 initDialogDeleteAll = function () {
   dialogDeleteAllConfirm = hmUI.createDialog({
-    title: 'Delete all notes?',
+    title: gettext('deleteAllNotes'),
     auto_hide: true,
     click_linster: ({ type }) => {
       if (type == 1) {
@@ -250,7 +239,7 @@ setGestureEvent = function () {
 Page({
   build() {
     hmUI.setScrollView(false);
-    hmUI.updateStatusBarTitle('Quick notes');
+    hmUI.updateStatusBarTitle(gettext('quickNotes'));
     getMultiClickTimeout();
     setGestureEvent();
     udapteNotesList();
