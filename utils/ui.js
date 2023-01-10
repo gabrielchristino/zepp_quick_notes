@@ -1,5 +1,6 @@
-const width = 336;
-const height = 380;
+const deviceInfo = hmSetting.getDeviceInfo()
+const { width, height, screenShape } = deviceInfo
+
 const buttonWidth = 50;
 const buttonWidthMargin = 102;
 const buttonHeight = 50;

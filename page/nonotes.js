@@ -1,9 +1,11 @@
 import { gettext } from 'i18n'
+const deviceInfo = hmSetting.getDeviceInfo()
+const { width, height, screenShape } = deviceInfo
 
 const logger = DeviceRuntimeCore.HmLogger.getLogger('no-notes')
 
-const width = 336;
-const height = 380;
+//const width = 336;
+//const height = 380;
 const buttonWidth = 100;
 const buttonWidthMargin = 102;
 const buttonHeight = 60;

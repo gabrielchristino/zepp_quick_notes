@@ -1,12 +1,14 @@
 import { gettext } from 'i18n'
+const deviceInfo = hmSetting.getDeviceInfo()
+const { width, height, screenShape } = deviceInfo
 
 import * as fs from './../utils/fs'
 import * as ui from '../utils/ui'
 
 const logger = DeviceRuntimeCore.HmLogger.getLogger('demo')
 
-const width = 336;
-const height = 380;
+//const width = 336;
+//const height = 380;
 const buttonWidth = 100;
 const buttonWidthMini = 60;
 const buttonHeight = 110;

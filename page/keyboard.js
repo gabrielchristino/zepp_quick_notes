@@ -1,13 +1,15 @@
 import { gettext } from 'i18n'
+const deviceInfo = hmSetting.getDeviceInfo()
+const { width, height, screenShape } = deviceInfo
 
 import * as fs from './../utils/fs'
 
 const logger = DeviceRuntimeCore.HmLogger.getLogger('keyboard')
 
-const width = 336;
-const height = 380;
-const buttonWidth = 100;
-const buttonWidthMargin = 102;
+// const width = 336;
+// const height = 380;
+let buttonWidth = 100;
+let buttonWidthMargin = 102;
 const buttonHeight = 60;
 const buttonHeightMargin = 62;
 const groupHeight = 5 * buttonHeightMargin;
@@ -18,7 +20,6 @@ const letters = [[',', '.', ' ', '?'], ['a', 'b', 'c'], ['d', 'e', 'f'], ['g', '
 const numbers = [['1'], ['2'], ['3'], ['4'], ['5'], ['6'], ['7'], ['8'], ['9'], ['0'], ['!', '@', '+', '-'], ['$', '%', '(', ')']];
 
 let currentLetter = '';
-let lastLetter = '';
 let text = '';
 
 let lastButton = 0;
@@ -248,7 +249,7 @@ createKeyboard = function () {
     })
 
     const backspace = hmUI.createWidget(hmUI.widget.GROUP, {
-        x: (width * 0) + (width - margin - buttonWidth),
+        x: 2 * buttonWidthMargin + margin,
         y: height - margin - 4 * buttonHeightMargin,
         w: buttonWidth,
         h: buttonHeight,
@@ -310,11 +311,14 @@ Page({
 
         lastClick = Date.now();
 
-        hmUI.setScrollView(true, px(width), 3, false);
+        hmUI.setScrollView(true, (width), 3, false);
 
         multiClickTimeout = fs.readKeyBoardMultiTimeout();
 
         // logger.log('multiClickTimeout key', multiClickTimeout)
+
+        buttonWidth = (width - margin * 2) / 3;
+        buttonWidthMargin = buttonWidth + 2;
 
         createKeyboard();
 

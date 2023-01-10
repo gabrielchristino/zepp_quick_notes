@@ -1,4 +1,0 @@
-AppSettingsPage({
-  build() {
-  }
-})
