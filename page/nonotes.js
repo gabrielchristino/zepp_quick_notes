@@ -17,7 +17,7 @@ let buttonStartAddANewNote;
 
 showNoNotesMessage = function () {
   const displayText = hmUI.createWidget(hmUI.widget.TEXT, {
-    x: (width * 0) + margin,
+    x: (width - (width - margin * 2)) / 2,
     y: 50,
     w: width - margin * 2,
     h: height - buttonHeight - 50 - 80,
@@ -32,7 +32,7 @@ showNoNotesMessage = function () {
   })
 
   const settingsInfo = hmUI.createWidget(hmUI.widget.TEXT, {
-    x: (width * 0) + margin,
+    x: (width - (width - margin * 2)) / 2,
     y: height - buttonHeight * 2 - 50,
     w: width - margin * 2,
     h: 80,
@@ -47,7 +47,7 @@ showNoNotesMessage = function () {
   })
 
   buttonStartAddANewNote = hmUI.createWidget(hmUI.widget.BUTTON, {
-    x: margin,
+    x: (width - (width - margin * 2)) / 2,
     y: height - margin - buttonHeightMargin,
     text: gettext('createFirstNote'),
     text_size: 30,

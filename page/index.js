@@ -7,15 +7,10 @@ import * as ui from '../utils/ui'
 
 const logger = DeviceRuntimeCore.HmLogger.getLogger('demo')
 
-//const width = 336;
-//const height = 380;
-const buttonWidth = 100;
 const buttonWidthMini = 60;
-const buttonHeight = 110;
 const buttonHeighMini = 60;
 const margin = 16;
-const groupHeight = 5 * (buttonHeight + margin);
-const topBarY = 50;
+const topBarY = 65;
 
 let notesList = [];
 let dataArray = [];
@@ -122,26 +117,26 @@ showNotesList = function (dataArray) {
   for (let index = 0; index < dataArray.length; index++) {
 
     const medidas = hmUI.getTextLayout(dataArray[index].savedNotesStr, {
-      text_size: 30,
-      text_width: width - buttonWidthMini - margin * 2,
+      text_size: px(30),
+      text_width: px(width - buttonWidthMini - margin * 2),
       wrapped: 1
     })
 
     const rowData = hmUI.createWidget(hmUI.widget.BUTTON, {
-      x: 0,
-      y: heightButton,
-      w: width - buttonWidthMini - margin,
-      h: medidas.height + margin,
+      x: px(0),
+      y: px(heightButton),
+      w: px(width - buttonWidthMini - margin),
+      h: px(medidas.height + margin),
       normal_color: 0x333333,
       press_color: 0x888888,
       radius: 16,
     })
 
     const displayText = hmUI.createWidget(hmUI.widget.TEXT, {
-      x: margin,
-      y: heightButton,
-      w: width - buttonWidthMini - margin * 2,
-      h: medidas.height + margin,
+      x: px(margin),
+      y: px(heightButton),
+      w: px(width - buttonWidthMini - margin * 2),
+      h: px(medidas.height + margin),
       color: 0xffffff,
       text_size: 30,
       align_h: hmUI.align.LEFT,
@@ -157,20 +152,20 @@ showNotesList = function (dataArray) {
     })
 
     const rowDelButton = hmUI.createWidget(hmUI.widget.BUTTON, {
-      x: width - buttonWidthMini,
-      y: heightButton,
-      w: buttonWidthMini,
-      h: medidas.height + margin,
+      x: px(width - buttonWidthMini),
+      y: px(heightButton),
+      w: px(buttonWidthMini),
+      h: px(medidas.height + margin),
       normal_color: 0xAD3C23,
       press_color: 0xD14221,
       radius: 16,
     })
 
     const rowDelButtonImg = hmUI.createWidget(hmUI.widget.BUTTON, {
-      x: width - buttonWidthMini,
-      y: heightButton,
-      w: buttonWidthMini,
-      h: medidas.height + margin,
+      x: px(width - buttonWidthMini),
+      y: px(heightButton),
+      w: px(buttonWidthMini),
+      h: px(medidas.height + margin),
       normal_src: 'ic_del_32px.png',
       press_src: 'ic_del_32px.png',
       click_func: () => {
@@ -186,10 +181,10 @@ showNotesList = function (dataArray) {
   }
 
   const endOfScreen = hmUI.createWidget(hmUI.widget.TEXT, {
-    x: margin,
-    y: yMargin + (heightButton + margin) * dataArray.length,
-    w: (width - margin * 2),
-    h: heightButton,
+    x: px(margin),
+    y: px(yMargin + (heightButton + margin) * dataArray.length),
+    w: px((width - margin * 2)),
+    h: px(heightButton),
     text: '',
     text_size: 0,
   })

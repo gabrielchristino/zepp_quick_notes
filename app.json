@@ -20,8 +20,9 @@
       "minVersion": "1.0.0"
     }
   },
+
   "targets": {
-    "common": {
+    "390x450-gts-3": {
       "module": {
         "page": {
           "pages": [
@@ -45,15 +46,27 @@
         {
           "name": "gts3-w",
           "deviceSource": 225
+        }
+      ],
+      "designWidth": 390
+    },
+    "336x384-gts-4-mini": {
+      "module": {
+        "page": {
+          "pages": [
+            "page/index",
+            "page/keyboard",
+            "page/nonotes",
+            "page/settings",
+            "page/doubleclick",
+            "page/more"
+          ]
         },
-        {
-          "name": "gts4",
-          "deviceSource": 7995648
-        },
-        {
-          "name": "gts4-w",
-          "deviceSource": 7995649
-        },
+        "app-side": {
+          "path": "app-side/index"
+        }
+      },
+      "platforms": [
         {
           "name": "gts4-mini",
           "deviceSource": 246
@@ -64,6 +77,34 @@
         }
       ],
       "designWidth": 336
+    },
+    "390x450-gts-4": {
+      "module": {
+        "page": {
+          "pages": [
+            "page/index",
+            "page/keyboard",
+            "page/nonotes",
+            "page/settings",
+            "page/doubleclick",
+            "page/more"
+          ]
+        },
+        "app-side": {
+          "path": "app-side/index"
+        }
+      },
+      "platforms": [
+        {
+          "name": "gts4",
+          "deviceSource": 7995648
+        },
+        {
+          "name": "gts4-w",
+          "deviceSource": 7995649
+        }
+      ],
+      "designWidth": 390
     }
   },
   "i18n": {

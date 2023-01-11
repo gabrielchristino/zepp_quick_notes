@@ -6,12 +6,9 @@ import * as fs from './../utils/fs'
 
 const logger = DeviceRuntimeCore.HmLogger.getLogger('settings')
 
-//const width = 336;
-//const height = 380;
-const buttonWidth = 64;
-const buttonWidthMargin = 102;
-const buttonHeight = 50;
-const margin = 15;
+const buttonWidth = px(64);
+const buttonHeight = px(50);
+const margin = px(15);
 
 const timeoutOptions = [250, 500, 750, 1000];
 
@@ -23,10 +20,10 @@ Page({
         multiClickTimeout = fs.readKeyBoardMultiTimeout();
 
         const radioGroup = hmUI.createWidget(hmUI.widget.RADIO_GROUP, {
-            x: margin,
-            y: buttonHeight + margin,
-            w: width,
-            h: height,
+            x: px(margin),
+            y: px(buttonHeight + margin),
+            w: px(width),
+            h: px(height),
             select_src: 'selected.png',
             unselect_src: 'unselected.png',
             check_func: (group, index, checked) => {
@@ -41,16 +38,16 @@ Page({
 
         for (let index = 0; index < timeoutOptions.length; index++) {
             radioButtons.push(radioGroup.createWidget(hmUI.widget.STATE_BUTTON, {
-                x: 0,
-                y: (margin + buttonHeight) * index,
-                w: buttonWidth,
-                h: buttonHeight
+                x: px(0),
+                y: px((margin + buttonHeight) * index),
+                w: px(buttonWidth),
+                h: px(buttonHeight)
             }))
             const optionLabel = hmUI.createWidget(hmUI.widget.TEXT, {
-                x: margin + buttonWidth,
-                y: buttonHeight + margin / 2 + (buttonHeight + margin) * index,
-                w: width - (margin * 2 + buttonWidth),
-                h: buttonHeight,
+                x: px(margin + buttonWidth),
+                y: px(buttonHeight + margin / 2 + (buttonHeight + margin) * index),
+                w: px(width - (margin * 2 + buttonWidth)),
+                h: px(buttonHeight),
                 color: 0xffffff,
                 text_size: px(24),
                 align_h: hmUI.align.LEFT,
