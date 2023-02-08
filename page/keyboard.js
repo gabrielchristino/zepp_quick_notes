@@ -209,7 +209,7 @@ createNumberKeyboard = function () {
     }
 }
 
-createKeyboard = function () {
+createTextBox = function () {
     displayText = hmUI.createWidget(hmUI.widget.TEXT, {
         x: 30,
         y: 1,
@@ -222,7 +222,9 @@ createKeyboard = function () {
         text_style: hmUI.text_style.CHAR_WRAP,
         text
     })
+}
 
+createOkButton = function () {
     const okButton = hmUI.createWidget(hmUI.widget.GROUP, {
         x: (width * 0) + margin,
         y: height - margin - 4 * buttonHeightMargin,
@@ -251,9 +253,9 @@ createKeyboard = function () {
             sendMessage()
         }
     })
+}
 
-
-
+createSpaceButton = function () {
     const spacebtn = hmUI.createWidget(hmUI.widget.GROUP, {
         x: buttonWidthMargin + margin,
         y: height - margin - 4 * buttonHeightMargin,
@@ -275,7 +277,9 @@ createKeyboard = function () {
             addSpace()
         }
     })
+}
 
+createBackspaceButton = function () {
     const backspace = hmUI.createWidget(hmUI.widget.GROUP, {
         x: 2 * buttonWidthMargin + margin,
         y: height - margin - 4 * buttonHeightMargin,
@@ -304,7 +308,9 @@ createKeyboard = function () {
             backspaceText()
         }
     })
+}
 
+createLettersKeyboard = function () {
     const lettersKeyboard = hmUI.createWidget(hmUI.widget.GROUP, {
         x: (width * 0),
         y: height - groupHeight - margin,
@@ -330,6 +336,14 @@ createKeyboard = function () {
             })
         }
     }
+}
+
+createKeyboard = function () {
+    createTextBox();
+    createOkButton();
+    createSpaceButton();
+    createBackspaceButton();
+    createLettersKeyboard();
 }
 
 Page({
