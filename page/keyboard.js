@@ -85,6 +85,10 @@ getALetter = function (buttonLetters, currentButton, timeToDoubleClick = multiCl
     lastClick = nowClick;
 }
 
+addSpace = function () {
+    text += ' ';
+}
+
 getAEmoji = function (emoji) {
     text += emoji;
 
@@ -171,7 +175,7 @@ createNumberKeyboard = function () {
         w: width - 60,
         h: 120,
         color: 0xffffff,
-        text_size: 36,
+        text_size: 30,
         align_h: hmUI.align.LEFT,
         align_v: hmUI.align.TOP,
         text_style: hmUI.text_style.CHAR_WRAP,
@@ -245,6 +249,30 @@ createKeyboard = function () {
         press_src: 'ic_confirm_52px.png',
         click_func: () => {
             sendMessage()
+        }
+    })
+
+
+
+    const spacebtn = hmUI.createWidget(hmUI.widget.GROUP, {
+        x: buttonWidthMargin + margin,
+        y: height - margin - 4 * buttonHeightMargin,
+        w: buttonWidth,
+        h: buttonHeight,
+    })
+
+    spacebtn.createWidget(hmUI.widget.BUTTON, {
+        x: 0,
+        y: 0,
+        w: buttonWidth,
+        h: buttonHeight,
+        text_size: 40,
+        text: "␣",
+        normal_color: 0x333333,
+        press_color: 0x888888,
+        radius: 5,
+        click_func: () => {
+            addSpace()
         }
     })
 

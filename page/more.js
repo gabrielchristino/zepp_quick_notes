@@ -29,6 +29,12 @@ const menuItems = [
         title: false
     },
     {
+        description: gettext('spaceButton'),
+        icon: 'ic_space_50.png',
+        page: '',
+        title: false
+    },
+    {
         description: gettext('about'),
         icon: '',
         page: '',
@@ -36,6 +42,12 @@ const menuItems = [
     },
     {
         description: gettext('createdBy'),
+        icon: 'me.png',
+        page: '',
+        title: false
+    },
+    {
+        description: gettext('buycoffee'),
         icon: 'ic_rest_50px.png',
         page: '',
         title: false

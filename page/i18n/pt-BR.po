@@ -19,6 +19,9 @@ msgstr "Dicas"
 msgid "doubleClickToEdit"
 msgstr "Clique duas vezes em uma nota para editá-la"
 
+msgid "spaceButton"
+msgstr "O espaço é o terceiro dígito no primeiro botão do teclado ',. ?' ou você pode usar o botão '␣'."
+
 msgid "about"
 msgstr "Sobre"
 
@@ -27,6 +30,9 @@ msgstr "Criado por Gabriel Christino"
 
 msgid "github"
 msgstr "GitHub gabrielchristino"
+
+msgid "buycoffee"
+msgstr "buymeacoffee gabrielchris"
 
 msgid "more"
 msgstr "Mais"

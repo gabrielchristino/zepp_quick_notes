@@ -19,6 +19,9 @@ msgstr "Hints"
 msgid "doubleClickToEdit"
 msgstr "Double-click a note to edit it"
 
+msgid "spaceButton"
+msgstr "The space is the third character in the first key ',. ?' or you can use the '␣' button."
+
 msgid "about"
 msgstr "About"
 
@@ -27,6 +30,9 @@ msgstr "Created by Gabriel Christino"
 
 msgid "github"
 msgstr "GitHub gabrielchristino"
+
+msgid "buycoffee"
+msgstr "buymeacoffee gabrielchris"
 
 msgid "more"
 msgstr "More"

@@ -16,7 +16,7 @@ To start, click on **create first note** button, you'll see a simple T9 keyboard
 <img src="screenshots/en_US/keyboard.png" width="200" height="200">
 <img src="screenshots/en_US/numberkeyboard.png" width="200" height="200">
 
-**Tip**: The space is the third character in the first key ***,. ?***
+**Tip**: The space is the third character in the first key ***,. ?*** or you can use the **␣** button.
 
 **Tip**: Slide from the right to see numbers, more characters and emojis.
 
@@ -35,6 +35,8 @@ Create a new note, clicking on the add button <img src="assets/336x384-gts-4-min
 And delete all notes, clicking on the top trash button <img src="assets/336x384-gts-4-mini/ic_del_50px.png" width="20" height="20">
 
 To delete a specific note, click on the respective trash button <img src="assets/336x384-gts-4-mini/ic_del_50px.png" width="20" height="20">, at the right of the note.
+
+Double-click a note to edit it.
 
 <br>
 
