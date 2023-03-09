@@ -145,7 +145,8 @@ initDialogSend = function () {
 }
 
 createEmojiKeyboard = function () {
-    const tela = 1 + indexKeyboard;
+    const tela = indexKeyboard+1;
+    console.log(tela);
     const emojiKeyboard = hmUI.createWidget(hmUI.widget.GROUP, {
         x: width * tela,
         y: height - groupHeight - margin,
@@ -354,13 +355,13 @@ createKeyboard = function () {
 
 Page({
     build() {
-        indexKeyboard = getApp()._options.globalData.keyboardTypeSelected;
+        indexKeyboard = Number(fs.readKeyBoardType());
         hmApp.unregisterGestureEvent();
         hmUI.setStatusBarVisible(false);
 
         lastClick = Date.now();
 
-        hmUI.setScrollView(true, (width), 5, false);
+        hmUI.setScrollView(true, (width), indexKeyboard+2, false);
 
         multiClickTimeout = fs.readKeyBoardMultiTimeout();
 

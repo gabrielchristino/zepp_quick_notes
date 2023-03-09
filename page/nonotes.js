@@ -1,4 +1,7 @@
 import { gettext } from 'i18n'
+
+import * as fs from './../utils/fs'
+
 const deviceInfo = hmSetting.getDeviceInfo()
 const { width, height, screenShape } = deviceInfo
 
@@ -66,7 +69,7 @@ showNoNotesMessage = function () {
 
 Page({
   build() {
-    let indexKeyboard = getApp()._options.globalData.keyboardTypeSelected;
+    let indexKeyboard = fs.readKeyBoardType();
     indexKeyboard = indexKeyboard > 1 ? 1 : indexKeyboard;
     keyboardSelected = getApp()._options.globalData.keyboardType[indexKeyboard];
 

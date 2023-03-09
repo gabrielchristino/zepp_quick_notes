@@ -27,7 +27,6 @@ Page({
             keyboardTypeSelected,
             function (index) {
                 fs.writeKeyBoardType(index)
-                getApp()._options.globalData.keyboardTypeSelected = index
             }
         )
     }

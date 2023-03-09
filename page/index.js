@@ -236,7 +236,7 @@ setGestureEvent = function () {
 
 Page({
   build() {
-    let indexKeyboard = getApp()._options.globalData.keyboardTypeSelected;
+    let indexKeyboard = fs.readKeyBoardType();
     indexKeyboard = indexKeyboard > 1 ? 1 : indexKeyboard;
     keyboardSelected = getApp()._options.globalData.keyboardType[indexKeyboard];
 

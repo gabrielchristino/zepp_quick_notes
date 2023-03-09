@@ -2,7 +2,7 @@
 
 A mini app for Zepp OS 1.0 for create quick annotations directly on watch with a T9 keyboard.
 
-## Screenshots
+## Quick start to a Quick note
 
 When you open the app and no note is created, you'll see this page
 
@@ -40,11 +40,39 @@ Double-click a note to edit it.
 
 <br>
 
+## Settings
+
 <img src="screenshots/en_US/settings.png" width="200" height="200">
 <img src="screenshots/en_US/timeout.png" width="200" height="200">
+<img src="screenshots/en_US/keyboardtype.png" width="200" height="200">
 <img src="screenshots/en_US/more.png" width="200" height="200">
+<img src="screenshots/en_US/more2.png" width="200" height="200">
+<img src="screenshots/en_US/more3.png" width="200" height="200">
 
-The settings page allow you to set the double-click speed, is the max time required to define if you're multi-clicking a button.
+<br>
+
+In the settings page you can set the double-click speed, change the keyboard type, read the Hints and About me :D
+1. The double-click is the max time required to define if you're multi-clicking a button.
+
+2. Now you have 3 types of keyboards:
+
+    <img src="screenshots/en_US/keyboard.png" width="100" height="100">
+
+    - **T9 Keyboard** : the first and classical one.
+
+    <br>
+
+    <img src="screenshots/en_US/keyboardfull.png" width="100" height="100">
+
+    - **Extended keyboard** : a QWERTY one to quick type any letter.
+
+    <br>
+
+    <img src="screenshots/en_US/keyboardsplit.png" width="100" height="100">
+    <img src="screenshots/en_US/keyboardsplit2.png" width="100" height="100">
+
+    - **Split keyboard**: a QWERTY one but in 2 screens for big letters, easy to see and type.
+
 
 ## The code
 

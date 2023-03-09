@@ -28,7 +28,6 @@ Page({
             timeOutIndex,
             function (index) {
                 fs.writeKeyBoardMultiTimeout(timeoutOptions[index])
-                getApp()._options.globalData.multiClickTimeout = timeoutOptions[index]
             }
         )
     }

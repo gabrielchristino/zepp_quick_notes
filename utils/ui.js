@@ -10,6 +10,7 @@ const margin = 15;
 const buttonWidthMini = 60;
 const buttonHeighMini = 60;
 const topBarY = 65;
+const fontSize = 28;
 
 /* parameters to create a menu list
 const menuItems = [
@@ -25,7 +26,7 @@ const menuItems = [
 export function createMenuList(menuItems) {
     let heightButton = (buttonHeight + margin);
     for (let index = 0; index < menuItems.length; index++) {
-        const textSize = menuItems[index].title ? px(36) : px(24);
+        const textSize = menuItems[index].title ? px(36) : px(fontSize);
         const itemWidth = menuItems[index].title ? width - (margin * 2) : menuItems[index].page != '' ? width - (margin + buttonWidth * 2) : width - (margin + buttonWidth);
         const medidas = hmUI.getTextLayout(menuItems[index].description, {
             text_size: px(textSize),
@@ -155,7 +156,7 @@ export function createCheckList(listItens, preSelectedItemIndex, callback) {
 
     for (let index = 0; index < listItens.length; index++) {
         const medidas = hmUI.getTextLayout(gettext(listItens[index]), {
-            text_size: px(24),
+            text_size: px(fontSize),
             text_width: px(width - (margin * 2 + buttonWidth)),
             wrapped: 1
         })
@@ -173,7 +174,7 @@ export function createCheckList(listItens, preSelectedItemIndex, callback) {
             w: px(width - (margin * 2 + buttonWidth)),
             h: px(itemHeight),
             color: 0xffffff,
-            text_size: px(24),
+            text_size: px(fontSize),
             align_h: hmUI.align.LEFT,
             align_v: hmUI.align.CENTER_V,
             text_style: hmUI.text_style.WRAP,
