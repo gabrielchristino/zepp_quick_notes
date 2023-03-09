@@ -23,6 +23,8 @@ let topBarComponent;
 let lastButton = 0;
 let lastClick = 0;
 
+let keyboardSelected = '';
+
 initDialogDeleteANote = function (indexToDelete, textReminder) {
   dialogDeleteAllConfirm = hmUI.createDialog({
     title: `${gettext('deleteThisNote')}\n${textReminder}`,
@@ -67,7 +69,7 @@ showtopBar = function (dataArray) {
         icon: 'ic_add_32px.png',
         callback: function() {
             getApp()._options.globalData.currentText = '';
-            hmApp.gotoPage({ file: 'page/keyboard' });
+            hmApp.gotoPage({ file: `page/${keyboardSelected}` });
         }
       },
       {
@@ -92,7 +94,7 @@ doubleClickToEditItem = function (indexToDelete, textReminder) {
     if (lastButton == indexToDelete) {
       fs.removeItemTodoList(indexToDelete)
       getApp()._options.globalData.currentText = textReminder;
-      hmApp.gotoPage({ file: 'page/keyboard' });
+      hmApp.gotoPage({ file: `page/${keyboardSelected}` });
     }
   }
 
@@ -197,16 +199,15 @@ showNotesList = function (dataArray) {
 }
 
 loadNotesListAndShow = function () {
+  // if there is some note, list on screen
   if (notesList && notesList.length > 0) {
-
     dataArray = [];
     for (let i = 0; i < notesList.length; i++) {
       dataArray.push({ savedNotesStr: notesList[i], img_src: '/ic_del_32px.png' });
     }
 
     showNotesList(dataArray);
-
-  } else {
+  } else { // else no note on list, go to 'no notes' page
     hmApp.gotoPage({ file: 'page/nonotes' })
   }
 }
@@ -235,6 +236,10 @@ setGestureEvent = function () {
 
 Page({
   build() {
+    let indexKeyboard = getApp()._options.globalData.keyboardTypeSelected;
+    indexKeyboard = indexKeyboard > 1 ? 1 : indexKeyboard;
+    keyboardSelected = getApp()._options.globalData.keyboardType[indexKeyboard];
+
     hmUI.setScrollView(false);
     hmUI.updateStatusBarTitle(gettext('quickNotes'));
     getMultiClickTimeout();

@@ -20,42 +20,77 @@ const menuItems = [
         description: gettext('hints'),
         icon: '',
         page: '',
+        callback: function() {},
         title: true
     },
     {
         description: gettext('doubleClickToEdit'),
         icon: 'ic_gesture_50px.png',
         page: '',
+        callback: function() {},
         title: false
     },
     {
         description: gettext('spaceButton'),
         icon: 'ic_space_50.png',
         page: '',
+        callback: function() {},
+        title: false
+    },
+    {
+        description: gettext('keyboardInfo1'),
+        icon: 'ic_apps_50px.png',
+        page: '',
+        callback: function() {},
+        title: false
+    },
+    {
+        description: gettext('keyboardInfo2'),
+        icon: '',
+        page: '',
+        callback: function() {},
+        title: false
+    },
+    {
+        description: gettext('keyboardInfo3'),
+        icon: '',
+        page: '',
+        callback: function() {},
+        title: false
+    },
+    {
+        description: gettext('keyboardInfo4'),
+        icon: '',
+        page: '',
+        callback: function() {},
         title: false
     },
     {
         description: gettext('about'),
         icon: '',
         page: '',
+        callback: function() {},
         title: true
     },
     {
         description: gettext('createdBy'),
         icon: 'me.png',
         page: '',
+        callback: function() {},
         title: false
     },
     {
         description: gettext('buycoffee'),
         icon: 'ic_rest_50px.png',
         page: '',
+        callback: function() {},
         title: false
     },
     {
         description: gettext('github'),
         icon: 'github.png',
         page: '',
+        callback: function() {},
         title: false
     },
 ]

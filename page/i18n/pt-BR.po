@@ -20,7 +20,19 @@ msgid "doubleClickToEdit"
 msgstr "Clique duas vezes em uma nota para editá-la"
 
 msgid "spaceButton"
-msgstr "O espaço é o terceiro dígito no primeiro botão do teclado ',. ?' ou você pode usar o botão '␣'."
+msgstr "No teclado compacto T9, o espaço é o terceiro dígito no primeiro botão do teclado ',. ?' ou você pode usar o botão '␣'."
+
+msgid "keyboardInfo1"
+msgstr "São 3 tipos de teclado para escolher:"
+
+msgid "keyboardInfo2"
+msgstr "- Um compacto T9"
+
+msgid "keyboardInfo3"
+msgstr "- Um completo, modelo QWERTY"
+
+msgid "keyboardInfo4"
+msgstr "- E um completo, modelo QWERTY dividido em 2 telas"
 
 msgid "about"
 msgstr "Sobre"
@@ -48,6 +60,18 @@ msgstr "criar a primeira nota"
 
 msgid "doubleClickSpeed"
 msgstr "Tempo do clique duplo"
+
+msgid "keyboardType"
+msgstr "Tipo de teclado"
+
+msgid "extendedKeyboard"
+msgstr "Teclado extendido"
+
+msgid "extendedKeyboard2"
+msgstr "Teclado extendido em 2 telas"
+
+msgid "t9Keyboard"
+msgstr "Teclado T9"
 
 msgid "settings"
 msgstr "Configurações"

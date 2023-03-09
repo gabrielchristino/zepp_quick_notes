@@ -1,5 +1,5 @@
 import * as fs from './../shared/fs'
-import { LAST_TEXT, TODO_FILE_NAME, KBD_MTCLK_TOUT } from './constants'
+import { LAST_TEXT, TODO_FILE_NAME, KBD_MTCLK_TOUT, KBD_TYPE } from './constants'
 
 export function readLastMessage() {
   const resData = fs.readFileSync(LAST_TEXT)
@@ -52,4 +52,16 @@ export function readKeyBoardMultiTimeout() {
 
 export function writeKeyBoardMultiTimeout(data) {
   fs.writeFileSync(KBD_MTCLK_TOUT, JSON.stringify(data))
+}
+
+
+
+
+export function readKeyBoardType() {
+  const resData = fs.readFileSync(KBD_TYPE)
+  return !resData ? 0 : resData
+}
+
+export function writeKeyBoardType(data) {
+  fs.writeFileSync(KBD_TYPE, JSON.stringify(data))
 }

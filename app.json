@@ -27,11 +27,13 @@
         "page": {
           "pages": [
             "page/index",
-            "page/keyboard",
+            "page/t9Keyboard",
             "page/nonotes",
             "page/settings",
             "page/doubleclick",
-            "page/more"
+            "page/more",
+            "page/keyboardtype",
+            "page/extendedKeyboard"
           ]
         },
         "app-side": {
@@ -55,11 +57,13 @@
         "page": {
           "pages": [
             "page/index",
-            "page/keyboard",
+            "page/t9Keyboard",
             "page/nonotes",
             "page/settings",
             "page/doubleclick",
-            "page/more"
+            "page/more",
+            "page/keyboardtype",
+            "page/extendedKeyboard"
           ]
         },
         "app-side": {
@@ -83,11 +87,13 @@
         "page": {
           "pages": [
             "page/index",
-            "page/keyboard",
+            "page/t9Keyboard",
             "page/nonotes",
             "page/settings",
             "page/doubleclick",
-            "page/more"
+            "page/more",
+            "page/keyboardtype",
+            "page/extendedKeyboard"
           ]
         },
         "app-side": {

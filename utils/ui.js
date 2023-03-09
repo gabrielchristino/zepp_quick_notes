@@ -1,3 +1,5 @@
+import { gettext } from 'i18n'
+
 const deviceInfo = hmSetting.getDeviceInfo()
 const { width, height, screenShape } = deviceInfo
 
@@ -14,7 +16,9 @@ const menuItems = [
     {
         description: 'Double-click speed',
         icon: 'ic_gesture_50px.png',
-        page: 'page/doubleclick'
+        page: 'page/doubleclick',
+        callbackFunc: function () {}
+        title: true
     }
 ]
 */
@@ -57,15 +61,15 @@ export function createMenuList(menuItems) {
                 src: 'ic_right_arrow.png'
             })
             imgIcon.addEventListener(hmUI.event.CLICK_DOWN, function (info) {
-                hmApp.gotoPage({ file: menuItems[index].page })
+                menuItems[index].callback();
             })
 
             titleSettingsPage.addEventListener(hmUI.event.CLICK_DOWN, function (info) {
-                hmApp.gotoPage({ file: menuItems[index].page })
+                menuItems[index].callback();
             })
 
             imgArrow.addEventListener(hmUI.event.CLICK_DOWN, function (info) {
-                hmApp.gotoPage({ file: menuItems[index].page })
+                menuItems[index].callback();
             })
         }
 
@@ -124,4 +128,62 @@ export function createTopBar(buttonsItens) {
             }
         })
     }
+}
+
+/* parameters to create a checkbox list
+listItems: Array of itens to choose
+preSelectedItemIndex: Item to be selected on first time
+callback: function to be called on choose
+*/
+export function createCheckList(listItens, preSelectedItemIndex, callback) {
+    let heightButton = (buttonHeight + margin);
+    const radioGroup = hmUI.createWidget(hmUI.widget.RADIO_GROUP, {
+        x: px(margin),
+        y: px(margin / 2),
+        w: px(width),
+        h: px(height),
+        select_src: 'selected.png',
+        unselect_src: 'unselected.png',
+        check_func: (group, index, checked) => {
+            if (checked) {
+                callback(index);
+            }
+        }
+    })
+
+    let radioButtons = [];
+
+    for (let index = 0; index < listItens.length; index++) {
+        const medidas = hmUI.getTextLayout(gettext(listItens[index]), {
+            text_size: px(24),
+            text_width: px(width - (margin * 2 + buttonWidth)),
+            wrapped: 1
+        })
+        const itemHeight = medidas.height > 50 ? medidas.height : 50;
+
+        radioButtons.push(radioGroup.createWidget(hmUI.widget.STATE_BUTTON, {
+            x: px(0),
+            y: px(heightButton),
+            w: px(buttonWidth),
+            h: px(buttonHeight)
+        }))
+        const optionLabel = hmUI.createWidget(hmUI.widget.TEXT, {
+            x: px(margin + buttonWidth),
+            y: px(heightButton),
+            w: px(width - (margin * 2 + buttonWidth)),
+            h: px(itemHeight),
+            color: 0xffffff,
+            text_size: px(24),
+            align_h: hmUI.align.LEFT,
+            align_v: hmUI.align.CENTER_V,
+            text_style: hmUI.text_style.WRAP,
+            text: gettext(listItens[index])
+        })
+        optionLabel.addEventListener(hmUI.event.CLICK_DOWN, function (info) {
+            callback(index);
+            radioGroup.setProperty(hmUI.prop.INIT, radioButtons[index]) 
+        })
+        heightButton += medidas.height + margin * 2;
+    }
+    radioGroup.setProperty(hmUI.prop.INIT, radioButtons[preSelectedItemIndex]) 
 }

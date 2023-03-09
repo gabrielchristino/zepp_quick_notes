@@ -20,7 +20,19 @@ msgid "doubleClickToEdit"
 msgstr "Double-click a note to edit it"
 
 msgid "spaceButton"
-msgstr "The space is the third character in the first key ',. ?' or you can use the '␣' button."
+msgstr "On compact T9 keyboard, the space is the third character in the first key ',. ?' or you can use the '␣' button."
+
+msgid "keyboardInfo1"
+msgstr "There are 3 types of keyboard to choose:"
+
+msgid "keyboardInfo2"
+msgstr "- A compact T9"
+
+msgid "keyboardInfo3"
+msgstr "- A full QWERTY"
+
+msgid "keyboardInfo4"
+msgstr "- And a full QWERTY split on 2 screens"
 
 msgid "about"
 msgstr "About"
@@ -48,6 +60,18 @@ msgstr "create first note"
 
 msgid "doubleClickSpeed"
 msgstr "Double-click speed"
+
+msgid "keyboardType"
+msgstr "Keyboard type"
+
+msgid "extendedKeyboard"
+msgstr "Extended Keyboard"
+
+msgid "extendedKeyboard2"
+msgstr "Extended Keyboard on 2 screens"
+
+msgid "t9Keyboard"
+msgstr "T9 Keyboard"
 
 msgid "settings"
 msgstr "Settings"

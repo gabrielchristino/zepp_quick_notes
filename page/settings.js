@@ -18,12 +18,21 @@ const menuItems = [
         description: gettext('doubleClickSpeed'),
         icon: 'ic_gesture_50px.png',
         page: 'page/doubleclick',
+        callback: function() {hmApp.gotoPage({ file: 'page/doubleclick' })},
+        title: false
+    },
+    {
+        description: gettext('keyboardType'),
+        icon: 'ic_apps_50px.png',
+        page: 'page/keyboardtype',
+        callback: function() {hmApp.gotoPage({ file: 'page/keyboardtype' })},
         title: false
     },
     {
         description: gettext('more'),
         icon: 'ic_lamp_50px.png',
         page: 'page/more',
+        callback: function() {hmApp.gotoPage({ file: 'page/more' })},
         title: false
     },
 ]

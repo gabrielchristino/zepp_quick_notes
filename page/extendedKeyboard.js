@@ -2,7 +2,7 @@ import { gettext } from 'i18n'
 const deviceInfo = hmSetting.getDeviceInfo()
 const { width, height, screenShape } = deviceInfo
 
-import * as fs from './../utils/fs'
+import * as fs from '../utils/fs'
 
 const logger = DeviceRuntimeCore.HmLogger.getLogger('keyboard')
 
@@ -10,13 +10,15 @@ const logger = DeviceRuntimeCore.HmLogger.getLogger('keyboard')
 // const height = 380;
 let buttonWidth = 100;
 let buttonWidthMargin = 102;
+let buttonWidth2 = 29;
+let buttonWidthMargin2 = buttonWidth2 + 2;
 const buttonHeight = 60;
 const buttonHeightMargin = 62;
 const groupHeight = 5 * buttonHeightMargin;
 const margin = 15;
 
 const emojis = ['😍', '😂', '😘', '😱', '♥', '😁', '😎', '🙈', '👍', '😢', '🙏', '😇', '😴', '👀', '😋'];
-const letters = [[',', '.', ' ', '?'], ['a', 'b', 'c'], ['d', 'e', 'f'], ['g', 'h', 'i'], ['j', 'k', 'l'], ['m', 'n', 'o'], ['p', 'q', 'r', 's'], ['t', 'u', 'v'], ['w', 'x', 'y', 'z']];
+const letters = [['q'], ['w'], ['e'], ['r'], ['t'], ['y'], ['u'], ['i'], ['o'], ['p'], ['a'], ['s'], ['d'], ['f'], ['g'], ['h'], ['j'], ['k'], ['l'], ['?'], ['z'], ['x'], ['c'], ['v'], ['b'], ['n'], ['m'], [','], ['.'], [':']];
 const numbers = [['1'], ['2'], ['3'], ['4'], ['5'], ['6'], ['7'], ['8'], ['9'], ['0'], ['!', '@', '+', '-'], ['$', '%', '(', ')']];
 
 let currentLetter = '';
@@ -32,6 +34,8 @@ let displayText2;
 let dialogSendConfirm;
 
 let multiClickTimeout = 1000;
+
+let indexKeyboard = 1;
 
 updateText = function () {
     displayText.setProperty(hmUI.prop.MORE, {
@@ -141,8 +145,9 @@ initDialogSend = function () {
 }
 
 createEmojiKeyboard = function () {
+    const tela = 1 + indexKeyboard;
     const emojiKeyboard = hmUI.createWidget(hmUI.widget.GROUP, {
-        x: width * 2,
+        x: width * tela,
         y: height - groupHeight - margin,
         w: buttonWidth * 3 + margin * 2,
         h: buttonHeight * 5 + margin * 4,
@@ -169,8 +174,9 @@ createEmojiKeyboard = function () {
 }
 
 createNumberKeyboard = function () {
+    const tela = indexKeyboard;
     displayText2 = hmUI.createWidget(hmUI.widget.TEXT, {
-        x: (width * 1) + 30,
+        x: (width * tela) + 30,
         y: 1,
         w: width - 60,
         h: 120,
@@ -183,7 +189,7 @@ createNumberKeyboard = function () {
     })
 
     const numbersKeyboard = hmUI.createWidget(hmUI.widget.GROUP, {
-        x: (width * 1),
+        x: (width * tela),
         y: height - groupHeight - margin,
         w: buttonWidth * 3 + margin * 2,
         h: buttonHeight * 5 + margin * 4,
@@ -314,24 +320,24 @@ createLettersKeyboard = function () {
     const lettersKeyboard = hmUI.createWidget(hmUI.widget.GROUP, {
         x: (width * 0),
         y: height - groupHeight - margin,
-        w: buttonWidth * 3 + margin * 2,
+        w: buttonWidth2 * 3 + margin * 2,
         h: buttonHeight * 5 + margin * 4,
     })
 
     for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
+        for (let j = 0; j < 10; j++) {
             lettersKeyboard.createWidget(hmUI.widget.BUTTON, {
-                x: j * buttonWidthMargin + margin,
+                x: j * buttonWidthMargin2 + margin,
                 y: groupHeight - (3 - i) * buttonHeightMargin,
-                text: getLettersToDisplay(letters[i * 3 + j]),
+                text: getLettersToDisplay(letters[i * 10 + j]),
                 text_size: 30,
-                w: buttonWidth,
+                w: buttonWidth2,
                 h: buttonHeight,
                 radius: 5,
                 normal_color: 0x333333,
                 press_color: 0x888888,
                 click_func: () => {
-                    getALetter(letters[i * 3 + j], i * 3 + j)
+                    getALetter(letters[i * 10 + j], i * 10 + j, -1)
                 }
             })
         }
@@ -348,12 +354,13 @@ createKeyboard = function () {
 
 Page({
     build() {
+        indexKeyboard = getApp()._options.globalData.keyboardTypeSelected;
         hmApp.unregisterGestureEvent();
         hmUI.setStatusBarVisible(false);
 
         lastClick = Date.now();
 
-        hmUI.setScrollView(true, (width), 3, false);
+        hmUI.setScrollView(true, (width), 5, false);
 
         multiClickTimeout = fs.readKeyBoardMultiTimeout();
 
@@ -361,6 +368,9 @@ Page({
 
         buttonWidth = (width - margin * 2) / 3;
         buttonWidthMargin = buttonWidth + 2;
+
+        buttonWidth2 = (width * indexKeyboard - margin * 3) / 10;
+        buttonWidthMargin2 = buttonWidth2 + 2;
 
         createKeyboard();
 
