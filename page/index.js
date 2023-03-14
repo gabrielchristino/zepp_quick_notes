@@ -268,7 +268,7 @@ loadNotesListAndShow = function () {
 udapteNotesList = function () {
   notesList = fs.readTodoList()
 
-  //loadNotesListAndShow();
+  loadNotesListAndShow();
 
   messageBuilder
   .request({

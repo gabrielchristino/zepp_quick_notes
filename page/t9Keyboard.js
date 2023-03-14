@@ -120,26 +120,34 @@ initDialogSend = function () {
             click_linster: ({ type }) => {
                 if (type == 1) {
                     fs.writeLastMessage(text);
+                    if(messageBuilder) {
+                        messageBuilder
+                        .request({
+                          method: 'ADD_NOTE',
+                          params: { new_item: text }
+                        })
+                        .then(({ result }) => {
+                            fs.addTodoList(text, true);
+                            fs.deleteLastMessage();
+                            text = '';
+                            updateText();
+                            hmApp.reloadPage({ file: 'page/index' });
+                        })
+                        .catch((res) => {
+                            fs.addTodoList(text, true);
+                            fs.deleteLastMessage();
+                            text = '';
+                            updateText();
+                            hmApp.reloadPage({ file: 'page/index' });
+                        })
+                    } else {
+                        fs.addTodoList(text, true);
+                        fs.deleteLastMessage();
+                        text = '';
+                        updateText();
+                        hmApp.reloadPage({ file: 'page/index' });
+                    }
 
-                    messageBuilder
-                    .request({
-                      method: 'ADD_NOTE',
-                      params: { new_item: text }
-                    })
-                    .then(({ result }) => {
-                        fs.addTodoList(text, true);
-                        fs.deleteLastMessage();
-                        text = '';
-                        updateText();
-                        hmApp.reloadPage({ file: 'page/index' });
-                    })
-                    .catch((res) => {
-                        fs.addTodoList(text, true);
-                        fs.deleteLastMessage();
-                        text = '';
-                        updateText();
-                        hmApp.reloadPage({ file: 'page/index' });
-                    })
                 }
             }
         })

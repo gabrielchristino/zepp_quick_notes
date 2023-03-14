@@ -1107,7 +1107,7 @@ export class MessageBuilder extends EventBus {
   requestCb(data, opts, cb) {
     const _requestCb = () => {
       const defaultOpts = {
-        timeout: 60000,
+        timeout: 10000,
         contentType: 'json',
         dataType: 'json'
       }
