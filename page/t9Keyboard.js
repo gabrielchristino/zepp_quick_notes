@@ -5,6 +5,8 @@ const { width, height, screenShape } = deviceInfo
 import * as fs from '../utils/fs'
 
 const logger = DeviceRuntimeCore.HmLogger.getLogger('keyboard')
+const { messageBuilder } = getApp()._options.globalData
+
 
 // const width = 336;
 // const height = 380;
@@ -118,11 +120,26 @@ initDialogSend = function () {
             click_linster: ({ type }) => {
                 if (type == 1) {
                     fs.writeLastMessage(text);
-                    fs.addTodoList(text, true);
-                    fs.deleteLastMessage();
-                    text = '';
-                    updateText();
-                    hmApp.reloadPage({ file: 'page/index' });
+
+                    messageBuilder
+                    .request({
+                      method: 'ADD_NOTE',
+                      params: { new_item: text }
+                    })
+                    .then(({ result }) => {
+                        fs.addTodoList(text, true);
+                        fs.deleteLastMessage();
+                        text = '';
+                        updateText();
+                        hmApp.reloadPage({ file: 'page/index' });
+                    })
+                    .catch((res) => {
+                        fs.addTodoList(text, true);
+                        fs.deleteLastMessage();
+                        text = '';
+                        updateText();
+                        hmApp.reloadPage({ file: 'page/index' });
+                    })
                 }
             }
         })

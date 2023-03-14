@@ -17,9 +17,9 @@ export function deleteLastMessage() {
 
 
 export function readTodoList() {
-  const resData = fs.readFileSync(TODO_FILE_NAME)
-
-  return !resData ? [] : JSON.parse(resData)
+  let resData = fs.readFileSync(TODO_FILE_NAME)
+  resData = !resData ? [] : JSON.parse(resData)
+  return resData;
 }
 
 export function addTodoList(data, merge = true) {

@@ -122,11 +122,26 @@ initDialogSend = function () {
             click_linster: ({ type }) => {
                 if (type == 1) {
                     fs.writeLastMessage(text);
-                    fs.addTodoList(text, true);
-                    fs.deleteLastMessage();
-                    text = '';
-                    updateText();
-                    hmApp.reloadPage({ file: 'page/index' });
+
+                    messageBuilder
+                    .request({
+                      method: 'ADD_NOTE',
+                      params: { new_item: text }
+                    })
+                    .then(({ result }) => {
+                        //fs.addTodoList(text, true);
+                        fs.deleteLastMessage();
+                        text = '';
+                        updateText();
+                        hmApp.reloadPage({ file: 'page/index' });
+                    })
+                    .catch((res) => {
+                        fs.addTodoList(text, true);
+                        fs.deleteLastMessage();
+                        text = '';
+                        updateText();
+                        hmApp.reloadPage({ file: 'page/index' });
+                    })
                 }
             }
         })
@@ -146,7 +161,6 @@ initDialogSend = function () {
 
 createEmojiKeyboard = function () {
     const tela = indexKeyboard+1;
-    console.log(tela);
     const emojiKeyboard = hmUI.createWidget(hmUI.widget.GROUP, {
         x: width * tela,
         y: height - groupHeight - margin,

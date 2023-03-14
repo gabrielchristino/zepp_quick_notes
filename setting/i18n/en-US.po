@@ -1,0 +1,7 @@
+
+msgid "addTodo"
+msgstr "Add a note"
+
+
+msgid "removeAllNotes"
+msgstr "Remove all"
