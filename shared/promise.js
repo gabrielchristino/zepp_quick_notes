@@ -324,7 +324,7 @@
 
   Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
     if (typeof console !== 'undefined' && console) {
-      // ('[jsfwk.error  ] Possible Unhandled Promise Rejection:', err) // eslint-disable-line no-console
+      console.log('[jsfwk.error  ] Possible Unhandled Promise Rejection:', err) // eslint-disable-line no-console
     }
   }
 

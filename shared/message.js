@@ -23,7 +23,7 @@ let logger
 function initLogger() {
   if (isHmAppDefined()) {
     logger = Logger.getLogger('device-message')
-    //logger.level = logger.levels.warn
+    // logger.level = logger.levels.warn
   } else {
     logger = Logger.getLogger('side-message')
   }
@@ -65,7 +65,7 @@ export const MessagePayloadType = {
 }
 
 export const DataType = {
-  text: 'text',
+  empty: 'empty',
   json: 'json',
   text: 'text',
   bin: 'bin',
@@ -89,7 +89,7 @@ export function getDataType(type) {
     case DataType.bin:
       return MessagePayloadDataTypeOp.BIN
       break;
-    case DataType.text:
+    case DataType.empty:
       return MessagePayloadDataTypeOp.EMPTY
       break;
     default:
@@ -1100,14 +1100,14 @@ export class MessageBuilder extends EventBus {
         }),
       ])
     }
-    
+
     return this.waitingShakePromise.then(_request)
   }
 
   requestCb(data, opts, cb) {
     const _requestCb = () => {
       const defaultOpts = {
-        timeout: 10000,
+        timeout: 5000,
         contentType: 'json',
         dataType: 'json'
       }

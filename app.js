@@ -5,9 +5,7 @@ const appDevicePort = 20
 const appSidePort = 0
 const appId = 1015585
 const messageBuilder = new MessageBuilder({
-  appId,
-  appDevicePort,
-  appSidePort,
+  appId
 })
 
 App({

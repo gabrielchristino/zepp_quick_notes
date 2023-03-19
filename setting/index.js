@@ -1,4 +1,5 @@
 import { gettext } from 'i18n'
+
 AppSettingsPage({
   state: {
     notesList: [],
@@ -14,10 +15,12 @@ AppSettingsPage({
     this.setItem()
   },
   deleteNotesList(index) {
+    var itemToDelete = this.state.notesList[index];
     this.state.notesList = this.state.notesList.filter((_, ind) => {
       return ind !== index
     })
     this.setItem()
+    this.state.props.settingsStorage.setItem('noteIndexDelete', {index, itemToDelete})
   },
   deleteAllNotes() {
     this.state.notesList = [];
@@ -176,6 +179,46 @@ AppSettingsPage({
             },
             [...contentItems],
           ),
+          contentItems.length == 0 &&
+            View(
+              {
+                style: {
+                  marginTop: '12px',
+                },
+              },
+              [
+                View(
+                  {
+                    style: {
+                      borderRadius: '6px',
+                      backgroundColor: 'white',
+    
+                      margin: '6px',
+    
+                      padding: '12px 12px',
+    
+                      flex: 1,
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justfyContent: 'center',
+                      alignItems: 'center',
+                    },
+                  },
+                  [
+                    TextInput({
+                      label: '',
+                      bold: true,
+                      value: gettext('noNotesCreated'),
+                      subStyle: {
+                        color: '#333',
+                        fontSize: '14px',
+                      },
+                      maxLength: 200,
+                    }),
+                  ],
+                ),
+              ],
+            ),
       ],
     )
   },

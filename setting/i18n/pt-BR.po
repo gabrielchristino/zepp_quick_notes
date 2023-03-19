@@ -1,0 +1,9 @@
+
+msgid "addTodo"
+msgstr "Criar nota"
+
+msgid "removeAllNotes"
+msgstr "Excluir tudo"
+
+msgid "noNotesCreated"
+msgstr "Olá! Você ainda não tem notas criadas"

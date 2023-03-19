@@ -5,6 +5,7 @@ const { width, height, screenShape } = deviceInfo
 import * as fs from '../utils/fs'
 
 const logger = DeviceRuntimeCore.HmLogger.getLogger('keyboard')
+const { messageBuilder } = getApp()._options.globalData
 
 // const width = 336;
 // const height = 380;
@@ -122,33 +123,11 @@ initDialogSend = function () {
             click_linster: ({ type }) => {
                 if (type == 1) {
                     fs.writeLastMessage(text);
-                    if(messageBuilder) {
-                        messageBuilder
-                        .request({
-                          method: 'ADD_NOTE',
-                          params: { new_item: text }
-                        })
-                        .then(({ result }) => {
-                            fs.addTodoList(text, true);
-                            fs.deleteLastMessage();
-                            text = '';
-                            updateText();
-                            hmApp.reloadPage({ file: 'page/index' });
-                        })
-                        .catch((res) => {
-                            fs.addTodoList(text, true);
-                            fs.deleteLastMessage();
-                            text = '';
-                            updateText();
-                            hmApp.reloadPage({ file: 'page/index' });
-                        })
-                    } else {
-                        fs.addTodoList(text, true);
-                        fs.deleteLastMessage();
-                        text = '';
-                        updateText();
-                        hmApp.reloadPage({ file: 'page/index' });
-                    }
+                    fs.addTodoList(text);
+                    fs.deleteLastMessage();
+                    text = '';
+                    updateText();
+                    hmApp.gotoPage({ file: 'page/index' });
                 }
             }
         })
@@ -167,7 +146,7 @@ initDialogSend = function () {
 }
 
 createEmojiKeyboard = function () {
-    const tela = indexKeyboard+1;
+    const tela = indexKeyboard + 1;
     const emojiKeyboard = hmUI.createWidget(hmUI.widget.GROUP, {
         x: width * tela,
         y: height - groupHeight - margin,
@@ -382,7 +361,7 @@ Page({
 
         lastClick = Date.now();
 
-        hmUI.setScrollView(true, (width), indexKeyboard+2, false);
+        hmUI.setScrollView(true, (width), indexKeyboard + 2, false);
 
         multiClickTimeout = fs.readKeyBoardMultiTimeout();
 
@@ -400,7 +379,7 @@ Page({
 
         createEmojiKeyboard();
 
-        text = getApp()._options.globalData.currentText + fs.readLastMessage();
+        text = fs.readLastMessage();
         updateText();
     },
     onDestroy() {

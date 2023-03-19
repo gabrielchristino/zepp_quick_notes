@@ -10,31 +10,31 @@ When you open the app and no note is created, you'll see this page
 
 <br>
 
-To start, click on **create first note** button, you'll see a simple T9 keyboard. To write a note, tap n times a key until the letter you want appear.
+To start, click on <span style="border-radius: 50%; background-color: #0986D4; width: 20px; height: 20px; display: inline-block; text-align: center"><img src="assets/336x384-gts-4-mini/ic_add_50px.png" width="20" height="20"></span> blue button, you'll see a simple T9 keyboard. To write a note, tap 'n' times a key until the letter you want appear.
 
 
 <img src="screenshots/en_US/keyboard.png" width="200" height="200">
 <img src="screenshots/en_US/numberkeyboard.png" width="200" height="200">
 
-**Tip**: The space is the third character in the first key ***,. ?*** or you can use the **␣** button.
+**Tip**: To enter space, tap 3 times the first key <span style="border-radius: 5%; background-color: #333333; width: 40px; height: 20px; display: inline-block; text-align: center">***,. ?***</span> or you can click the <span style="border-radius: 5%; background-color: #333333; width: 40px; height: 20px; display: inline-block; text-align: center">**␣**</span> button.
 
 **Tip**: Slide from the right to see numbers, more characters and emojis.
 
-**Tip**: To backspace a wrong letter, click on the red button <img src="assets/336x384-gts-4-mini/ic_delete_64.png" width="20" height="20">
+**Tip**: To backspace a wrong letter, click on the red button <span style="border-radius: 5%; background-color: #AD3C23; width: 40px; height: 20px; display: inline-block; text-align: center"><img src="assets/336x384-gts-4-mini/ic_delete_64.png" width="20" height="20"></span>
 
-**Tip**: When you've finished, click on the blue button <img src="assets/336x384-gts-4-mini/ic_confirm_52px.png" width="20" height="20">, and your note will be created.
+**Tip**: When you've finished, click on the blue button <span style="border-radius: 5%; background-color: #0986D4; width: 40px; height: 20px; display: inline-block; text-align: center"><img src="assets/336x384-gts-4-mini/ic_confirm_52px.png" width="20" height="20"></span>, and your note will be created.
 
 <br>
 
 <img src="screenshots/en_US/noteslist.png" width="200" height="200">
 
-On this screen, you can access the settings by clicking on the gear button <img src="assets/336x384-gts-4-mini/ic_sys_32px.png" width="20" height="20">
+On this screen, you can access the settings by clicking on the gear button <span style="border-radius: 100%; background-color: #333333; width: 20px; height: 20px; display: inline-block; text-align: center"><img src="assets/336x384-gts-4-mini/ic_sys_32px.png" width="20" height="20"></span>
 
-Create a new note, clicking on the add button <img src="assets/336x384-gts-4-mini/ic_add_50px.png" width="20" height="20">
+Create a new note, clicking on the add button <span style="border-radius: 50%; background-color: #0986D4; width: 20px; height: 20px; display: inline-block; text-align: center"><img src="assets/336x384-gts-4-mini/ic_add_50px.png" width="20" height="20"></span>
 
-And delete all notes, clicking on the top trash button <img src="assets/336x384-gts-4-mini/ic_del_50px.png" width="20" height="20">
+And delete all notes, clicking on the top trash button <span style="border-radius: 50%; background-color: #AD3C23; width: 20px; height: 20px; display: inline-block; text-align: center"><img src="assets/336x384-gts-4-mini/ic_del_50px.png" width="20" height="20"></span>
 
-To delete a specific note, click on the respective trash button <img src="assets/336x384-gts-4-mini/ic_del_50px.png" width="20" height="20">, at the right of the note.
+To delete a specific note, click on the respective trash button <span style="border-radius: 5%; background-color: #AD3C23; width: 20px; height: 20px; display: inline-block; text-align: center"><img src="assets/336x384-gts-4-mini/ic_del_50px.png" width="20" height="20"></span>, at the right of the note.
 
 Double-click a note to edit it.
 
@@ -73,6 +73,26 @@ In the settings page you can set the double-click speed, change the keyboard typ
 
     - **Split keyboard**: a QWERTY one but in 2 screens for big letters, easy to see and type.
 
+## Add notes on your phone
+
+Now you can add notes directly on the Settings page in the Zepp app, and it'll synchronize on your watch.
+
+When you first open, you'll see this page.
+
+<img src="screenshots/en_US/phoneside_nonotes.png" width="200" height="200">
+<img src="screenshots/en_US/phoneside_addnote.png" width="200" height="200">
+<img src="screenshots/en_US/phoneside_noteslist.png" width="200" height="200">
+
+<br>
+
+Click on <span style="border-radius: 5px; background-color: #0986D4; height: 20px; padding: 5px; display: inline-block; text-align: center">Add a note</span> to create a note.
+
+Click on <span style="border-radius: 5px; background-color: #AD3C23; height: 20px; padding: 5px; display: inline-block; text-align: center">Remove all?</span> to delete all notes at once.
+
+Click on <span style="border-radius: 5px; background-color: #AD3C23; height: 20px; padding: 5px; display: inline-block; text-align: center">delete</span> to delete a specific note.
+
+
+<br>
 
 ## The code
 
@@ -98,6 +118,10 @@ In the settings page you can set the double-click speed, change the keyboard typ
 
 4. **utils** I created some things to simplify the code, like Constants and UI components.
 
+5. **app-side** Here is the communication between the watch and your phone.
+
+6. **setting** This is the phone side notes list.
+<br><br>
 # Buy me a coffee
 
 Help me to keep going!

@@ -1,4 +1,5 @@
 import { MessageBuilder } from '../shared/message'
+
 const messageBuilder = new MessageBuilder()
 
 function getNotesList() {
@@ -14,21 +15,21 @@ AppSideService({
     settings.settingsStorage.addListener(
       'change',
       ({ key, newValue, oldValue }) => {
-
-        messageBuilder.call({
-          newValue, oldValue
-        })
-
+        messageBuilder.call({key, newValue})
       },
     )
 
     messageBuilder.on('request', (ctx) => {
       const payload = messageBuilder.buf2Json(ctx.request.payload)
+
       if (payload.method === 'GET_NOTES') {
+
         ctx.response({
           data: { result: getNotesList() },
         })
-      } else if (payload.method === 'ADD_NOTE') {
+
+      } else if (payload.method === 'ADD_NOTE') {      
+
         const { params: { new_item } = {} } = payload
         const notesList = getNotesList()
         const newNotesList = [...notesList, new_item]
@@ -37,7 +38,18 @@ AppSideService({
         ctx.response({
           data: { result: newNotesList },
         })
+
+      } else if (payload.method === 'ADD_NOTES') {      
+
+        const { params: { new_items } = [] } = payload
+        settings.settingsStorage.setItem('notesList', JSON.stringify(new_items))
+
+        ctx.response({
+          data: { result: new_items },
+        })
+
       } else if (payload.method === 'DELETE_NOTE') {
+
         const { params: { indexToDelete } = {} } = payload
         const notesList = getNotesList()
         const newNotesList = notesList.filter((_, i) => i !== indexToDelete)
@@ -46,13 +58,16 @@ AppSideService({
         ctx.response({
           data: { result: newNotesList },
         })
+
       } else if (payload.method === 'DELETE_ALL_NOTES') {
+
         const newNotesList = []
         settings.settingsStorage.setItem('notesList', JSON.stringify(newNotesList))
 
         ctx.response({
           data: { result: newNotesList },
         })
+
       }
 
     })

@@ -2,6 +2,8 @@
 msgid "addTodo"
 msgstr "Add a note"
 
-
 msgid "removeAllNotes"
 msgstr "Remove all"
+
+msgid "noNotesCreated"
+msgstr "hello! you have no notes created yet"

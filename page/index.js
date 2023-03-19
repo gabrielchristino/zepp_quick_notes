@@ -32,18 +32,12 @@ initDialogDeleteANote = function (indexToDelete, textReminder) {
     auto_hide: true,
     click_linster: ({ type }) => {
       if (type == 1) {
-        loadNotesListAndShow();
+        fs.removeItemTodoList(indexToDelete, textReminder);
+        notesList.splice(indexToDelete, 1);
 
-        messageBuilder
-        .request({
-          method: 'DELETE_NOTE',
-          params: { indexToDelete }
-        })
-        .then(({ result }) => {
-          fs.deleteTodoList();
-          udapteNotesList();
-        })
-        .catch((res) => {})
+        fs.addDelList(textReminder);
+
+        udapteNotesList();
       }
     }
   })
@@ -56,20 +50,11 @@ initDialogDeleteAll = function () {
     auto_hide: true,
     click_linster: ({ type }) => {
       if (type == 1) {
-        loadNotesListAndShow();
+        fs.delList(fs.readDelList());
+        fs.deleteTodoList();
+        notesList = [];
 
-        messageBuilder
-        .request({
-          method: 'DELETE_ALL_NOTES'
-        })
-        .then(({ result }) => {
-          fs.deleteTodoList();
-          udapteNotesList();
-        })
-        .catch((res) => {
-          fs.deleteTodoList();
-          udapteNotesList();
-        })
+        udapteNotesList();
       }
     }
   })
@@ -77,59 +62,52 @@ initDialogDeleteAll = function () {
 }
 
 showtopBar = function () {
+  const buttonsItens = [
+    {
+      color: 0xAD3C23,
+      icon: 'ic_del_32px.png',
+      callback: function () {
+        initDialogDeleteAll()
+      }
+    },
+    {
+      color: 0x0986D4,
+      icon: 'ic_add_32px.png',
+      callback: function () {
+        fs.writeLastMessage('');
+        hmApp.gotoPage({ file: `page/${keyboardSelected}` });
+      }
+    },
+    {
+      color: 0x333333,
+      icon: 'ic_sys_32px.png',
+      callback: function () {
+        hmApp.gotoPage({ file: 'page/settings' });
+      }
+    },
+    {
+      color: 0x333333,
+      icon: 'ic_refresh_32px.png',
+      callback: function () {
+        hmApp.reloadPage({ url: 'page/index' });
+      }
+    },
+  ]
 
-    const buttonsItens = [
-      {
-        color: 0xAD3C23,
-        icon: 'ic_del_32px.png',
-        callback:  function() {
-          initDialogDeleteAll()
-        }
-      },
-      {
-        color: 0x0986D4,
-        icon: 'ic_add_32px.png',
-        callback: function() {
-            getApp()._options.globalData.currentText = '';
-            hmApp.gotoPage({ file: `page/${keyboardSelected}` });
-        }
-      },
-      {
-        color: 0x333333,
-        icon: 'ic_sys_32px.png',
-        callback: function() {
-          hmApp.gotoPage({ file: 'page/settings' });
-        }
-      },
-      {
-        color: 0x333333,
-        icon: 'ic_refresh_32px.png',
-        callback: function() {
-          udapteNotesList();
-        }
-      },
-    ]
-
-    ui.createTopBar(buttonsItens);
+  ui.createTopBar(buttonsItens);
 }
 
 doubleClickToEditItem = function (indexToDelete, textReminder) {
   let nowClick = Date.now();
   if (nowClick - lastClick < multiClickTimeout) {
     if (lastButton == indexToDelete) {
-      //loadNotesListAndShow();
-      fs.removeItemTodoList(indexToDelete)
+      fs.writeLastMessage(textReminder);
+      fs.removeItemTodoList(indexToDelete, textReminder);
+      fs.addDelList(textReminder);
 
-      messageBuilder
-      .request({
-        method: 'DELETE_NOTE',
-        params: { indexToDelete }
-      })
-      .then(({ result }) => {
-        getApp()._options.globalData.currentText = textReminder;
-        hmApp.gotoPage({ file: `page/${keyboardSelected}` });
-      })
-      .catch((res) => {})
+      notesList.splice(indexToDelete, 1);
+
+      hmApp.gotoPage({ file: `page/${keyboardSelected}` });
     }
   }
 
@@ -150,7 +128,7 @@ showNotesList = function (dataArray) {
   const yMargin = topBarY + buttonHeighMini + margin;
 
   let heightButton = yMargin;
-  if(dataArray && dataArray.length > 0) {
+  if (dataArray && dataArray.length > 0) {
     for (let index = 0; index < dataArray.length; index++) {
       const medidas = hmUI.getTextLayout(dataArray[index].savedNotesStr, {
         text_size: px(30),
@@ -230,7 +208,7 @@ showNotesList = function (dataArray) {
   } else {
     const displayText = hmUI.createWidget(hmUI.widget.TEXT, {
       x: (width - (width - margin * 2)) / 2,
-      y: 60 + margin,
+      y: 0,
       w: width - margin * 2,
       h: height,
       color: 0xffffff,
@@ -252,17 +230,13 @@ showNotesList = function (dataArray) {
 
 loadNotesListAndShow = function () {
   // if there is some note, list on screen
+  dataArray = [];
   if (notesList && notesList.length > 0) {
-    dataArray = [];
-    for (let i = 0; i < notesList.length; i++) {
-      dataArray.push({ savedNotesStr: notesList[i], img_src: '/ic_del_32px.png' });
-    }
-
-    showNotesList(dataArray);
-  } else { // else no note on list, go to 'no notes' page
-    //hmApp.gotoPage({ file: 'page/nonotes' })
-    showNotesList([]);
+    notesList.forEach(item => {
+      dataArray.push({ savedNotesStr: item, img_src: '/ic_del_32px.png' });
+    })
   }
+  showNotesList(dataArray);
 }
 
 udapteNotesList = function () {
@@ -271,41 +245,33 @@ udapteNotesList = function () {
   loadNotesListAndShow();
 
   messageBuilder
-  .request({
-    method: 'GET_NOTES'
-  })
-  .then(({ result }) => {
-    var newNoteList = notesList.concat(result.filter((item) => notesList.indexOf(item) < 0))
-
-    fs.deleteTodoList();
-
-    messageBuilder
     .request({
-      method: 'DELETE_ALL_NOTES'
+      method: 'GET_NOTES'
     })
     .then(({ result }) => {
-      fs.deleteTodoList();
-    })
-    .catch((res) => {})
+      var newNoteList = [...notesList, ...result]
+      newNoteList = [...new Set(newNoteList)];
 
-    newNoteList.forEach((item, index) => {
-        messageBuilder
+      var delList = fs.readDelList();
+
+      newNoteList = newNoteList.filter( elem => delList.indexOf(elem) < 0 )
+
+      messageBuilder
         .request({
-          method: 'ADD_NOTE',
-          params: { new_item: item }
+          method: 'ADD_NOTES',
+          params: { new_items: newNoteList }
         })
         .then(({ result }) => {
-          fs.addTodoList(item, true);
+          fs.deleteDelList();
         })
-        .catch((res) => {})
-      })
+        .catch((res) => { })
 
-    notesList = newNoteList;
-    loadNotesListAndShow();
-  })
-  .catch((res) => {
-    loadNotesListAndShow();
-  })
+      notesList = newNoteList;
+      fs.addList(notesList);
+      
+      loadNotesListAndShow();
+    })
+    .catch((res) => { })
 }
 
 getMultiClickTimeout = function () {
@@ -327,31 +293,14 @@ setGestureEvent = function () {
 
 Page({
   onInit() {
-    if(!messageBuilder) { return }
     messageBuilder.on('call', ({ payload: buf }) => {
-      var newBuf = JSON.parse(buf)
-      var newValue = JSON.parse(newBuf.newValue);
-      var oldValue = JSON.parse(newBuf.oldValue);
+      const data = messageBuilder.buf2Json(buf)
 
-     var valueToExclude = oldValue.filter((item) => newValue.indexOf(item) < 0)
+      if (data.key == 'noteIndexDelete') {
+        fs.removeItemTodoList(data.key, data.itemToDelete);
+      }
 
-     const isLargeNumber = (element) => element == valueToExclude;
-
-      var indexToDelete = oldValue.findIndex(isLargeNumber)
-
-      fs.removeItemTodoList(indexToDelete);
-      
-        messageBuilder
-        .request({
-          method: 'DELETE_NOTE',
-          params: { indexToDelete }
-        })
-        .then(({ result }) => {
-          udapteNotesList();
-        })
-        .catch((res) => {})
-
-      hmApp.reloadPage({ url: 'page/index' })
+      udapteNotesList();
     })
   },
   build() {
